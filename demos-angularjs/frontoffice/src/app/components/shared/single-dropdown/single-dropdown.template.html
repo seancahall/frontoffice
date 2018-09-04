@@ -1,0 +1,21 @@
+<div class="single-dropdown-component" ng-click="$ctrl.Toggle()" ng-class="{ 'disabled': $ctrl.disabled }">
+    <div class="single-dropdown-component__input">
+        <div class="single-dropdown-component__input__value">
+            {{ $ctrl.GetName($ctrl.ngModel) }}
+        </div>
+    </div>
+    <div class="single-dropdown-component__list" ng-if="$ctrl.isOpened">
+        <div ng-if="$ctrl.filterName !== 'savedSearches'" class="single-dropdown-component__list__element" ng-repeat="element in $ctrl.elements" ng-click="$ctrl.SetModel(element)">
+            {{ element[$ctrl.label] }}
+        </div>
+        <div ng-if="$ctrl.filterName === 'savedSearches'" class="single-dropdown-component__list__element" ng-repeat="element in $ctrl.elements">
+            <span class="filterContent__saved-query-item" ng-click="$ctrl.SetModel(element)">
+                {{ element[$ctrl.label] }}
+                <i ng-if="!element.isCustomMarketRequestPending && !element.isCustomChannel && element.status !== 'inactive'"
+                   ng-click="$ctrl.removeSavedSearch($event, element)"
+                   class="fa fa-trash"
+                   title="Remove this query"></i>
+            </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1341 @@
+<div class="content filterContent">
+    <div class="search-results-panel">
+        <div class="results-count">
+            <div class="container-fluid container-fluid-no-padding">
+                <div class="col-xs-6">
+                    <div class="results_num">
+                        <span>Results Found: {{ $ctrl.GetTotalResults() | number }}</span>
+                    </div>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <button class="btn btn-orange btn-sm"
+                            style="letter-spacing: .01em; font-weight: bold; padding: 7px 18px; font-size: 10px; margin: 6px 0;"
+                            ng-class="{ 'btn-disabled': !$ctrl.IsButtonEnabled() }"
+                            ng-click="$ctrl.Update(!$ctrl.IsButtonEnabled())"
+                            uib-tooltip="Apply another filter to activate the button"
+                            tooltip-placement="bottom"
+                            tooltip-enable="$ctrl.IsTooltipForButtonVisible()"
+                            style="margin-top: 5px;">
+                        {{ $ctrl.GetButtonText() }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navigation-simple" layout="column">
+        <div class="menupage-items">
+            <!-- SAVED QUERIES -->
+            <div class="menupage-item"
+                 ng-class="!$ctrl.IsFilterEnabled('savedQueries') ? 'disabled' : ''">
+                <div class="container-fluid container-fluid-no-padding heading" ng-click="$ctrl.Toggle('savedQueries'); $ctrl.LoadAllLookups()">
+                    <div class="col-xs-10 title">
+                        Saved Queries and Lists
+                    </div>
+                    <div class="col-xs-2 text-right title-sign">
+                        <i class="fa" ng-class="$ctrl.IsExpanded('savedQueries') ? 'fa-minus' : 'fa-plus'"></i>
+                    </div>
+                </div>
+                <div class="list-content" ng-if="$ctrl.IsExpanded('savedQueries')">
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Saved Queries and Lists
+                            </div>
+
+                            <loading-spinner-component ng-if="$ctrl.getLoadingStatus('savedQueries', 'savedSearches')"></loading-spinner-component>
+
+                            <single-dropdown-component
+                                class="scSelectBefore"
+                                placeholder="$ctrl.GetPlaceholder('savedQueries', 'savedSearches')"
+                                ng-model="$ctrl.Model.savedQueries.selectedId"
+                                elements="$ctrl.GetOptions('savedQueries', 'savedSearches')"
+                                filter-name="'savedSearches'"
+                                property="id"
+                                label="name"
+                            ></single-dropdown-component>
+
+                            <div class="files-action browse-industries-container">
+                                <button
+                                    class="btn btn-default btn-sm"
+                                    ng-click="$ctrl.openSavedQueryCustomMarketRequest()"
+                                    ng-disabled="!$ctrl.savedQueryList.length">
+                                    Request Query as Market
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /SAVED QUERIES -->
+
+            <!-- MARKETS -->
+            <div class="menupage-item"
+                 ng-class="!$ctrl.IsFilterEnabled('markets') ? 'disabled' : ''">
+                <div class="container-fluid container-fluid-no-padding heading" ng-click="$ctrl.Toggle('markets')">
+                    <div class="col-xs-10 title">
+                        Markets
+                    </div>
+                    <div class="col-xs-2 text-right title-sign">
+                        <i class="fa" ng-class="$ctrl.IsExpanded('markets') ? 'fa-minus' : 'fa-plus'"></i>
+                    </div>
+                </div>
+                <div class="list-content" ng-if="$ctrl.IsExpanded('markets')">
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Markets <i class="fa fa-info-circle"
+                                           uib-tooltip="Markets are segments of data. They can be customized or based on our industry specific models."
+                                           tooltip-placement="bottom"></i>
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('market', 'ids')"
+                                 selected-model="$ctrl.Model.market.ids"
+                                 events="$ctrl.EventsFactory('market', 'ids')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('market', 'ids') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /MARKETS -->
+
+            <!-- ACCOUNTS -->
+            <div class="menupage-item"
+                 ng-class="!$ctrl.IsFilterEnabled('account') ? 'disabled' : ''">
+                <div class="container-fluid container-fluid-no-padding heading" ng-click="$ctrl.IsFilterEnabled('account') && $ctrl.Toggle('account')">
+                    <div class="col-xs-10 title">
+                        ACCOUNTS
+                    </div>
+                    <div class="col-xs-2 text-right title-sign">
+                        <i class="fa" ng-class="$ctrl.IsExpanded('account') ? 'fa-minus' : 'fa-plus'"></i>
+                    </div>
+                </div>
+                <div class="list-content" ng-if="$ctrl.IsExpanded('account')">
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Accounts name <i class="fa fa-info-circle"
+                                                 uib-tooltip="Search for one or more company names"
+                                                 tooltip-placement="bottom"></i>
+                            </div>
+                            <md-chips ng-model="$ctrl.Model.enterprise.companyNames"
+                                      md-transform-chip="$ctrl.TransformChip($chip, 'enterprise', 'companyNames')"
+                                      md-separator-keys="$ctrl.GetKeyCodes()"
+                                      md-require-match=""
+                                      put-chip-leavemouse
+                                      placeholder="{{ ::$ctrl.GetPlaceholder('enterprise', 'companyNames') }}"
+                                      class="input-box chips-input">
+                                <md-chip-template boolean-search-chip="{{ $chip.booleanSearch }}">
+                                    <span>
+                                        {{ $chip.name }}
+                                    </span>
+                                </md-chip-template>
+                                <button md-chip-remove="" class="btn-remove-tag">
+                                    <img src="/assets/images/close.png" alt="">
+                                </button>
+                            </md-chips>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Domain lookup <i class="fa fa-info-circle"
+                                                 uib-tooltip="Remove http:// or www. before searching for a domain. .com, .org, .edu etc can remain in the search. Entering one word into the search will return all results with that word in the domain."
+                                                 tooltip-placement="bottom"></i>
+                            </div>
+                            <md-chips ng-model="$ctrl.Model.enterprise.domainNames"
+                                      md-transform-chip="$ctrl.TransformChip($chip, 'enterprise', 'domainNames')"
+                                      md-separator-keys="$ctrl.GetKeyCodes()"
+                                      md-require-match=""
+                                      put-chip-leavemouse
+                                      placeholder="{{ ::$ctrl.GetPlaceholder('enterprise', 'domainNames') }}"
+                                      class="input-box chips-input">
+                                <md-chip-template boolean-search-chip="{{ $chip.booleanSearch }}">
+                                    <span>
+                                        {{ $chip.name }}
+                                    </span>
+                                </md-chip-template>
+                                <button md-chip-remove="" class="btn-remove-tag">
+                                    <img src="/assets/images/close.png" alt="">
+                                </button>
+                            </md-chips>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Industry
+                            </div>
+                            <div ng-dropdown-multiselect=""
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('enterprise', 'industryIds')"
+                                 selected-model="$ctrl.Model.enterprise.industryIds"
+                                 events="$ctrl.EventsFactory('enterprise', 'industryIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('enterprise', 'industryIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                            <div class="files-action browse-industries-container">
+                                <button class="btn btn-default btn-sm" ng-click="$ctrl.OpenIndustriesBrowser('enterprise')">
+                                    Browse Industries
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                <a href="http://www.osha.gov/pls/imis/sic_manual.html" target="_blank">SIC</a> /
+                                <a href="http://www.census.gov/cgi-bin/sssd/naics/naicsrch?chart=2012" target="_blank">NAICS</a> /
+                                <a href="http://www.cso.ie/px/u/NACECoder/NACEItems/searchnace.asp" target="_blank">NACE</a>
+                                <i class="fa fa-info-circle"
+                                   uib-tooltip="Select which code you would like to use and then enter the respective code"
+                                   tooltip-placement="bottom"></i>
+                            </div>
+                            <single-dropdown-component
+                                    placeholder="$ctrl.GetPlaceholder('enterprise', 'codeType')"
+                                    ng-model="$ctrl.Model.enterprise.codeType"
+                                    elements="$ctrl.GetOptions('enterprise', 'codeType')"
+                                    property="id"
+                                    label="name"
+                                    ng-change="$ctrl.CodeTypeChange('enterprise', 'codeType')"
+                            ></single-dropdown-component>
+                            <ui-select ng-keyup="$ctrl.OnKeypressPreventEnter($event, $select.search, 'enterprise', $ctrl.Model.enterprise.codeType)"
+                                       multiple
+                                       spinner-enabled="true"
+                                       uis-open-close="$ctrl.ClearList('enterprise', $ctrl.Model.enterprise.codeType)"
+                                       tagging-label="false"
+                                       ng-disabled="!$ctrl.Model.enterprise.codeType"
+                                       ng-model="$ctrl.Model.enterprise[$ctrl.Model.enterprise.codeType]">
+                                <ui-select-match
+                                        placeholder="{{ $ctrl.Model.enterprise.codeType ? $ctrl.GetPlaceholder('enterprise', $ctrl.Model.enterprise.codeType) : 'Select type above' }}">
+                                    <span boolean-search-ui-select-chip>{{ $item.booleanSearch ? $item.name : '#' + $item.id + ' / ' + $item.name }}</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in $ctrl.GetOptions('enterprise', $ctrl.Model.enterprise.codeType, true)"
+                                                   refresh="$ctrl.GetNoCachingLookup($select.search, 'enterprise', $ctrl.Model.enterprise.codeType, 1)"
+                                                   refresh-delay="800"
+                                                   ui-disable-choice="item.status == 'inactive'">
+                                    <span ng-if="item.status === 'inactive'">{{ item.name }}</span>
+                                    <span ng-if="item.status !== 'inactive'">{{ '#' + item.id + ' / ' + item.name }}</span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Popular Business List
+                            </div>
+                            <div ng-dropdown-multiselect=""
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('enterprise', 'businessLists')"
+                                 selected-model="$ctrl.Model.enterprise.businessLists"
+                                 events="$ctrl.EventsFactory('enterprise', 'businessLists')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('enterprise', 'businessLists') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                Revenue in U.S. Dollars
+                            </div>
+
+                            <min-max-fields-component
+                                data="multiRangeObject"
+                                element-type="'revenue'"
+                                element-index="$index"
+                                show-remove-button="$index > 0"
+                                ng-repeat="multiRangeObject in $ctrl.rangeFieldsData.enterprise.revenue"></min-max-fields-component>
+
+                            <div class="files-action browse-industries-container col-xs-12" ng-if="$ctrl.rangeFieldsData.enterprise.revenue.length < 10">
+                                <button class="btn btn-default btn-sm min-max-remove" ng-click="$ctrl.addRangeElement('enterprise', 'revenues')">
+                                    + ADD ANOTHER
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="additional-subheader-margin item-subheader">
+                                Employees
+                            </div>
+
+                            <min-max-fields-component
+                                data="multiRangeObject"
+                                element-type="'employees'"
+                                element-index="$index"
+                                show-remove-button="$index > 0"
+                                ng-repeat="multiRangeObject in $ctrl.rangeFieldsData.enterprise.employees"></min-max-fields-component>
+
+                            <div class="files-action browse-industries-container col-xs-12" ng-if="$ctrl.rangeFieldsData.enterprise.employees.length < 10">
+                                <button class="btn btn-default btn-sm min-max-remove" ng-click="$ctrl.addRangeElement('enterprise', 'employees')">
+                                    + ADD ANOTHER
+                                </button>
+                            </div>
+                        </div>
+
+                        <min-max-fields-component
+                            data="multiRangeObject"
+                            element-type="'itBudget'"
+                            element-index="$index"
+                            show-remove-button="true"
+                            ng-repeat="multiRangeObject in $ctrl.rangeFieldsData.enterprise.itBudget"></min-max-fields-component>
+
+                        <div class="files-action browse-industries-container col-xs-12" ng-if="$ctrl.rangeFieldsData.enterprise.itBudget.length > 0 && $ctrl.rangeFieldsData.enterprise.itBudget.length < 10">
+                            <button class="btn btn-default btn-sm min-max-remove"
+                                    ng-click="$ctrl.addRangeElement('enterprise', $ctrl.rangeFieldsData.enterprise.itBudget[0].filter)">
+                                + ADD ANOTHER
+                            </button>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                IT Budget in U.S. Dollars
+                                <i class="fa fa-info-circle"
+                                   uib-tooltip="To add IT Budget filters with count ranges to your search, choose from the below dropdown."
+                                   tooltip-placement="bottom"></i>
+                            </div>
+                            <div class="col-xs-12">
+                                <single-dropdown-component
+                                        class="scSelectBefore"
+                                        placeholder="'Select a Budget Type'"
+                                        ng-model="$ctrl.selectedItem.enterprise"
+                                        elements="$ctrl.rangeDropdownsGroups.enterprise"
+                                        label="label"
+                                        disabled="!$ctrl.rangeDropdownEnabled.enterprise"
+                                        after-select="$ctrl.addRangeGroup('enterprise')"
+                                ></single-dropdown-component>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Country
+                            </div>
+                            <div ng-dropdown-multiselect=""
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('enterprise', 'countryIds')"
+                                 selected-model="$ctrl.Model.enterprise.countryIds"
+                                 events="$ctrl.EventsFactory('enterprise', 'countryIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('enterprise', 'countryIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- /ACCOUNTS -->
+
+            <!-- SITES -->
+            <div class="menupage-item"
+                 ng-class="!$ctrl.IsFilterEnabled('site') ? 'disabled' : ''">
+                <div class="container-fluid container-fluid-no-padding heading" ng-click="$ctrl.IsFilterEnabled('site') && $ctrl.Toggle('site')">
+                    <div class="col-xs-10 title">
+                        SITES
+                    </div>
+                    <div class="col-xs-2 text-right title-sign">
+                        <i class="fa" ng-class="$ctrl.IsExpanded('site') ? 'fa-minus' : 'fa-plus'"></i>
+                    </div>
+                </div>
+                <div class="list-content" ng-if="$ctrl.IsExpanded('site')">
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Site type
+                            </div>
+                            <div ng-dropdown-multiselect=""
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('site', 'corpHQTypeIds')"
+                                 selected-model="$ctrl.Model.site.corpHQTypeIds"
+                                 events="$ctrl.EventsFactory('site', 'corpHQTypeIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('site', 'corpHQTypeIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Industry
+                            </div>
+                            <div ng-dropdown-multiselect=""
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('site', 'industryIds')"
+                                 selected-model="$ctrl.Model.site.industryIds"
+                                 events="$ctrl.EventsFactory('site', 'industryIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('site', 'industryIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                            <div class="files-action browse-industries-container">
+                                <button class="btn btn-default btn-sm" ng-click="$ctrl.OpenIndustriesBrowser('site')">
+                                    Browse Industries
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                <a href="http://www.osha.gov/pls/imis/sic_manual.html" target="_blank">SIC</a> /
+                                <a href="http://www.census.gov/cgi-bin/sssd/naics/naicsrch?chart=2012" target="_blank">NAICS</a> /
+                                <a href="http://www.cso.ie/px/u/NACECoder/NACEItems/searchnace.asp" target="_blank">NACE</a>
+                                <i class="fa fa-info-circle"
+                                   uib-tooltip="Select which code you would like to use and then enter the respective code"
+                                   tooltip-placement="bottom"></i>
+                            </div>
+                            <single-dropdown-component
+                                    placeholder="$ctrl.GetPlaceholder('site', 'codeType')"
+                                    ng-model="$ctrl.Model.site.codeType"
+                                    elements="$ctrl.GetOptions('site', 'codeType')"
+                                    property="id"
+                                    label="name"
+                                    ng-change="$ctrl.CodeTypeChange('site', 'codeType')"
+                            ></single-dropdown-component>
+                            <ui-select ng-keyup="$ctrl.OnKeypressPreventEnter($event, $select.search, 'site', $ctrl.Model.site.codeType)"
+                                       multiple
+                                       spinner-enabled="true"
+                                       uis-open-close="$ctrl.ClearList('site', $ctrl.Model.site.codeType)"
+                                       tagging-label="false"
+                                       ng-disabled="!$ctrl.Model.site.codeType"
+                                       ng-model="$ctrl.Model.site[$ctrl.Model.site.codeType]">
+                                <ui-select-match
+                                        placeholder="{{ $ctrl.Model.site.codeType ? $ctrl.GetPlaceholder('site', $ctrl.Model.site.codeType) : 'Select type above' }}">
+                                    <span boolean-search-ui-select-chip>{{ $item.booleanSearch ? $item.name : '#' + $item.id + ' / ' + $item.name }}</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in $ctrl.GetOptions('site', $ctrl.Model.site.codeType, true)"
+                                                   refresh="$ctrl.GetNoCachingLookup($select.search, 'site', $ctrl.Model.site.codeType, 1)"
+                                                   refresh-delay="800"
+                                                   ui-disable-choice="item.status == 'inactive'">
+                                    <span ng-if="item.status === 'inactive'">{{ item.name }}</span>
+                                    <span ng-if="item.status !== 'inactive'">{{ '#' + item.id + ' / ' + item.name }}</span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Company name <i class="fa fa-info-circle"
+                                                uib-tooltip="Search for one or more company names. For Boolean search use the operator NOT to exclude a company from your search. You can also use &quot;quotation marks&quot; to search for phrases."
+                                                tooltip-placement="bottom"></i>
+                            </div>
+                            <md-chips ng-model="$ctrl.Model.site.companyNames"
+                                      md-transform-chip="$ctrl.TransformChip($chip, 'site', 'companyNames')"
+                                      md-separator-keys="$ctrl.GetKeyCodes()"
+                                      md-require-match=""
+                                      put-chip-leavemouse
+                                      placeholder="{{ ::$ctrl.GetPlaceholder('site', 'companyNames') }}"
+                                      class="input-box chips-input">
+                                <md-chip-template boolean-search-chip="{{ $chip.booleanSearch }}">
+                                    <span>
+                                        {{ $chip.name }}
+                                    </span>
+                                </md-chip-template>
+                                <button md-chip-remove="" class="btn-remove-tag">
+                                    <img src="/assets/images/close.png" alt="">
+                                </button>
+                            </md-chips>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                Revenue in U.S. Dollars
+                            </div>
+
+                            <min-max-fields-component
+                                data="multiRangeObject"
+                                element-type="'revenue'"
+                                element-index="$index"
+                                show-remove-button="$index > 0"
+                                ng-repeat="multiRangeObject in $ctrl.rangeFieldsData.site.revenue"></min-max-fields-component>
+
+                            <div class="files-action browse-industries-container col-xs-12" ng-if="$ctrl.rangeFieldsData.site.revenue.length < 10">
+                                <button class="btn btn-default btn-sm min-max-remove" ng-click="$ctrl.addRangeElement('site', 'revenues')">
+                                    + ADD ANOTHER
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="additional-subheader-margin item-subheader">
+                                Employees
+                            </div>
+
+                            <min-max-fields-component
+                                data="multiRangeObject"
+                                element-type="'employees'"
+                                element-index="$index"
+                                show-remove-button="$index > 0"
+                                ng-repeat="multiRangeObject in $ctrl.rangeFieldsData.site.employees"></min-max-fields-component>
+
+                            <div class="files-action browse-industries-container col-xs-12" ng-if="$ctrl.rangeFieldsData.site.employees.length < 10">
+                                <button class="btn btn-default btn-sm min-max-remove" ng-click="$ctrl.addRangeElement('site', 'employees')">
+                                    + ADD ANOTHER
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                Employees in Country (Europe Only) <i class="fa fa-info-circle"
+                                                                      uib-tooltip="Consisting of European site data, Employees in Countries means the total Employees in Company and in Country"
+                                                                      tooltip-placement="bottom"></i>
+                            </div>
+                            <div class="col-xs-5">
+                                <input
+                                    type="text"
+                                    ng-model="$ctrl.Model.site.employeesInCountry.min"
+                                    ng-value="$ctrl.Model.site.employeesInCountry.min"
+                                    ng-keypress="$ctrl.preventNotNumericInput($event)"
+                                    placeholder="{{ ::$ctrl.GetPlaceholder('site', 'employeesInCountry', 'min') }}"
+                                    add-input-commas
+                                    class="input-box single-value-input">
+                            </div>
+                            <div class="col-xs-2 text-center">
+                                <div class="item-subheader min-to-max">
+                                    to
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <input type="text"
+                                       ng-model="$ctrl.Model.site.employeesInCountry.max"
+                                       ng-value="$ctrl.Model.site.employeesInCountry.max | addCommas"
+                                       ng-keypress="$ctrl.preventNotNumericInput($event)"
+                                       placeholder="{{ ::$ctrl.GetPlaceholder('site', 'employeesInCountry', 'max') }}"
+                                       add-input-commas
+                                       class="input-box single-value-input"
+                                       ng-class="$ctrl.isInputGreaterThan($ctrl.Model.site.employeesInCountry.min, $ctrl.Model.site.employeesInCountry.max) ? 'input-error' : ''" />
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                language <i class="fa fa-info-circle"
+                                            uib-tooltip="Language is the primary language spoken at a site"
+                                            tooltip-placement="bottom"></i>
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('site', 'languageIds')"
+                                 selected-model="$ctrl.Model.site.languageIds"
+                                 events="$ctrl.EventsFactory('site', 'languageIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('site', 'languageIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+
+                        <min-max-fields-component
+                            data="multiRangeObject"
+                            element-type="'itBudget'"
+                            element-index="$index"
+                            show-remove-button="true"
+                            ng-repeat="multiRangeObject in $ctrl.rangeFieldsData.site.itBudget"></min-max-fields-component>
+
+                        <div class="files-action browse-industries-container col-xs-12" ng-if="$ctrl.rangeFieldsData.site.itBudget.length > 0 && $ctrl.rangeFieldsData.site.itBudget.length < 10">
+                            <button class="btn btn-default btn-sm min-max-remove"
+                                    ng-click="$ctrl.addRangeElement('site', $ctrl.rangeFieldsData.site.itBudget[0].filter)">
+                                + ADD ANOTHER
+                            </button>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                IT Budget in U.S. Dollars
+                                <i class="fa fa-info-circle"
+                                   uib-tooltip="To add IT Budget filters with count ranges to your search, choose from the below dropdown."
+                                   tooltip-placement="bottom"></i>
+                            </div>
+                            <div class="col-xs-12">
+                                <single-dropdown-component
+                                    class="scSelectBefore"
+                                    placeholder="'Select a Budget Type'"
+                                    ng-model="$ctrl.selectedItem.site"
+                                    elements="$ctrl.rangeDropdownsGroups.site"
+                                    label="label"
+                                    disabled="!$ctrl.rangeDropdownEnabled.site"
+                                    after-select="$ctrl.addRangeGroup('site')"
+                                ></single-dropdown-component>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- /SITES -->
+
+            <!-- CONTACTS -->
+            <div class="menupage-item"
+                 ng-class="!$ctrl.IsFilterEnabled('contact') ? 'disabled' : ''">
+                <div class="container-fluid container-fluid-no-padding heading" ng-click="$ctrl.IsFilterEnabled('contact') && $ctrl.Toggle('contact')">
+                    <div class="col-xs-10 title">
+                        CONTACTS
+                    </div>
+                    <div class="col-xs-2 text-right title-sign">
+                        <i class="fa" ng-class="$ctrl.IsExpanded('contact') ? 'fa-minus' : 'fa-plus'"></i>
+                    </div>
+                </div>
+                <div class="list-content" ng-if="$ctrl.IsExpanded('contact')">
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Name <i class="fa fa-info-circle"
+                                        uib-tooltip="Search for one or more contact names. For Boolean search use the operator NOT to exclude a contact from your search. You can also use &quot;quotation marks&quot; to search for phrases."
+                                        tooltip-placement="bottom"></i>
+                            </div>
+                            <md-chips ng-model="$ctrl.Model.contact.contactNames"
+                                      md-transform-chip="$ctrl.TransformChip($chip, 'contact', 'contactNames')"
+                                      md-separator-keys="$ctrl.GetKeyCodes()"
+                                      md-require-match=""
+                                      put-chip-leavemouse
+                                      placeholder="{{ ::$ctrl.GetPlaceholder('contact', 'contactNames') }}"
+                                      class="input-box chips-input">
+                                <md-chip-template boolean-search-chip="{{ $chip.booleanSearch }}">
+                                    <span>
+                                        {{ $chip.name }}
+                                    </span>
+                                </md-chip-template>
+                                <button md-chip-remove="" class="btn-remove-tag">
+                                    <img src="/assets/images/close.png" alt="">
+                                </button>
+                            </md-chips>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Title <i class="fa fa-info-circle"
+                                         uib-tooltip="Search for one or more title keywords. For Boolean search use the operator NOT or AND to include and exclude a word from your title search. You can also use &quot;quotation marks&quot; to search for phrases."
+                                         tooltip-placement="bottom"></i>
+                            </div>
+                            <md-chips ng-model="$ctrl.Model.contact.titles"
+                                      md-transform-chip="$ctrl.TransformChip($chip, 'contact', 'titles')"
+                                      md-separator-keys="$ctrl.GetKeyCodes()"
+                                      md-require-match=""
+                                      put-chip-leavemouse
+                                      placeholder="{{ ::$ctrl.GetPlaceholder('contact', 'titles') }}"
+                                      class="input-box chips-input">
+                                <md-chip-template boolean-search-chip="{{ $chip.booleanSearch }}">
+                                    <span>
+                                        {{ $chip.name }}
+                                    </span>
+                                </md-chip-template>
+                                <button md-chip-remove="" class="btn-remove-tag">
+                                    <img src="/assets/images/close.png" alt="">
+                                </button>
+                            </md-chips>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Department
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('contact', 'departmentIds')"
+                                 selected-model="$ctrl.Model.contact.departmentIds"
+                                 events="$ctrl.EventsFactory('contact', 'departmentIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('contact', 'departmentIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Job Function
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('contact', 'jobFunctionIds')"
+                                 selected-model="$ctrl.Model.contact.jobFunctionIds"
+                                 events="$ctrl.EventsFactory('contact', 'jobFunctionIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('contact', 'jobFunctionIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Management level
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('contact', 'jobLevelIds')"
+                                 selected-model="$ctrl.Model.contact.jobLevelIds"
+                                 events="$ctrl.EventsFactory('contact', 'jobLevelIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('contact', 'jobLevelIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Email Filter
+                            </div>
+                            <single-dropdown-component
+                                    class="scSelectBefore"
+                                    placeholder="$ctrl.GetPlaceholder('contact', 'contactSearchType')"
+                                    ng-model="$ctrl.Model.contact.contactSearchType"
+                                    elements="$ctrl.GetOptions('contact', 'contactSearchType')"
+                                    after-select="$ctrl.emailFilerAfterSelect()"
+                                    property="id"
+                                    label="name"
+                            ></single-dropdown-component>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Email Verification <i class="fa fa-info-circle"
+                                                      uib-tooltip="Select between valid emails and catchall emails. Catchall emails may have a higher bounce rate than valid."
+                                                      tooltip-placement="bottom"></i>
+                            </div>
+                            <single-dropdown-component
+                                class="scSelectBefore"
+                                placeholder="$ctrl.GetPlaceholder('contact', 'contactEmailType')"
+                                ng-model="$ctrl.Model.contact.contactEmailType"
+                                elements="$ctrl.GetOptions('contact', 'contactEmailType')"
+                                disabled="$ctrl.Model.contact.contactSearchType === 'withoutemail'"
+                                property="id"
+                                label="name"
+                            ></single-dropdown-component>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Include Contacts Without A Site <i class="fa fa-info-circle"
+                                                                   uib-tooltip="Toggle on and contacts not attached to a site will be included in your search. Toggle off and these contacts will not be included in your search. Contacts that are attached to a site are ranked higher than those that are not."
+                                                                   tooltip-placement="bottom"></i>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox"
+                                    ng-model="$ctrl.Model.contact.includeEnterpriseContacts">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /CONTACTS -->
+
+            <!-- LOCATIONS -->
+            <div class="menupage-item"
+                 ng-class="!$ctrl.IsFilterEnabled('location') ? 'disabled' : ''">
+                <div class="container-fluid container-fluid-no-padding heading" ng-click="$ctrl.IsFilterEnabled('location') && $ctrl.Toggle('location')">
+                    <div class="col-xs-10 title">
+                        LOCATIONS
+                    </div>
+                    <div class="col-xs-2 text-right title-sign">
+                        <i class="fa" ng-class="$ctrl.IsExpanded('location') ? 'fa-minus' : 'fa-plus'"></i>
+                    </div>
+                </div>
+                <div class="list-content" ng-if="$ctrl.IsExpanded('location')">
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Continent
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('location', 'continentIds')"
+                                 selected-model="$ctrl.Model.location.continentIds"
+                                 events="$ctrl.EventsFactory('location', 'continentIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('location', 'continentIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Country
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('location', 'countryIds')"
+                                 selected-model="$ctrl.Model.location.countryIds"
+                                 events="$ctrl.EventsFactory('location', 'countryIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('location', 'countryIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                STATE/PROVINCE
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('location', 'stateIds')"
+                                 selected-model="$ctrl.Model.location.stateIds"
+                                 events="$ctrl.EventsFactory('location', 'stateIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('location', 'stateIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                City
+                            </div>
+                            <md-chips ng-model="$ctrl.Model.location.cities"
+                                      md-transform-chip="$ctrl.TransformChip($chip, 'location', 'cities')"
+                                      md-separator-keys="$ctrl.GetKeyCodes()"
+                                      md-require-match=""
+                                      put-chip-leavemouse
+                                      md-on-remove="$ctrl.checkLocationFilters()"
+                                      placeholder="{{ ::$ctrl.GetPlaceholder('location', 'cities') }}"
+                                      class="input-box chips-input">
+                                <md-chip-template boolean-search-chip="{{ $chip.booleanSearch }}">
+                                    <span>
+                                        {{ $chip.name }}
+                                    </span>
+                                </md-chip-template>
+                                <button md-chip-remove="$ctrl.checkLocationFilters()" class="btn-remove-tag">
+                                    <img src="/assets/images/close.png" alt="">
+                                </button>
+                            </md-chips>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Postal Code <i class="fa fa-info-circle"
+                                               uib-tooltip="Search for one or more postal codes in North America and Europe"
+                                               tooltip-placement="bottom"></i>
+                            </div>
+                            <md-chips ng-model="$ctrl.Model.location.zipCodes"
+                                      md-transform-chip="$ctrl.TransformChip($chip, 'location', 'zipCodes')"
+                                      md-separator-keys="$ctrl.GetKeyCodes()"
+                                      md-on-add="$ctrl.checkLocationFilters()"
+                                      md-on-remove="$ctrl.checkLocationFilters()"
+                                      md-require-match=""
+                                      put-chip-leavemouse
+                                      placeholder="{{ ::$ctrl.GetPlaceholder('location', 'zipCodes') }}"
+                                      class="input-box chips-input">
+                                <md-chip-template boolean-search-chip="{{ $chip.booleanSearch }}">
+                                    <span>
+                                        {{ $chip.name }}
+                                    </span>
+                                </md-chip-template>
+                                <button md-chip-remove="$ctrl.checkLocationFilters()" class="btn-remove-tag">
+                                    <img src="/assets/images/close.png" alt="">
+                                </button>
+                            </md-chips>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="item-subheader">
+                                Metro Region
+                            </div>
+                            <ui-select ng-keyup="$ctrl.OnKeypressPreventEnter($event, $select.search, 'location', 'metros')"
+                                       multiple
+                                       spinner-enabled="true"
+                                       uis-open-close="$ctrl.ClearList('location', 'metros')"
+                                       tagging-label="false"
+                                       ng-model="$ctrl.Model.location.metros">
+                                <ui-select-match
+                                        placeholder="{{ $ctrl.GetPlaceholder('location', 'metros') }}">
+                                    <span boolean-search-ui-select-chip>{{ $item.name }}</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in $ctrl.GetOptions('location', 'metros', true)"
+                                                   refresh="$ctrl.GetNoCachingLookup($select.search, 'location', 'metros', 1)"
+                                                   refresh-delay="800"
+                                                   ui-disable-choice="item.status == 'inactive'">
+                                    <span ng-if="item.status === 'inactive'">{{ item.name }}</span>
+                                    <span ng-if="item.status !== 'inactive'">{{ '#' + item.id + ' / ' + item.name }}</span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Nuts Code <i class="fa fa-info-circle"
+                                             uib-tooltip="NUTS is a European Location code with 3 levels. Each level provides more granularity to the location search"
+                                             tooltip-placement="bottom"></i>
+                            </div>
+                            <ui-select ng-keyup="$ctrl.OnKeypressPreventEnter($event, $select.search, 'location', 'nutsCodes')"
+                                       multiple
+                                       spinner-enabled="true"
+                                       uis-open-close="$ctrl.ClearList('location', 'nutsCodes')"
+                                       tagging-label="false"
+                                       on-remove="$ctrl.onRemoveNutsCode($item, $model)"
+                                       ng-model="$ctrl.Model.location.nutsCodes">
+                                <ui-select-match placeholder="{{ ::$ctrl.GetPlaceholder('location', 'nutsCodes') }}">
+                                    <span boolean-search-ui-select-chip>{{ $item.booleanSearch ? $item.name : '#' + $item.id + ' / ' + $item.name }}</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in $ctrl.GetOptions('location', 'nutsCodes', true)"
+                                                   refresh="$ctrl.GetNoCachingLookup($select.search, 'location', 'nutsCodes', 1)"
+                                                   refresh-delay="800"
+                                                   ui-disable-choice="item.status == 'inactive'">
+                                    {{ item.id + ' - ' + item.name }}
+                                </ui-select-choices>
+                            </ui-select>
+
+                            <div class="files-action browse-industries-container">
+                                <button class="btn btn-default btn-sm" ng-click="$ctrl.openNutsCodesBrowser()">
+                                    Browse Nuts Codes
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                Location Search Type <i class="fa fa-info-circle"
+                                                     uib-tooltip="Use this filter to search for the locations of company headquarters, sites or contacts."
+                                                     tooltip-placement="bottom"></i>
+                            </div>
+                            <div class="col-xs-12">
+                                <single-dropdown-component
+                                    placeholder="$ctrl.GetPlaceholder('location', 'locationRuleId')"
+                                    ng-model="$ctrl.Model.location.locationRuleId"
+                                    elements="$ctrl.GetOptions('location', 'locationRuleId')"
+                                    property="id"
+                                    label="name"
+                                    disabled="$ctrl.disableLocationSearchType"
+                                ></single-dropdown-component>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /LOCATIONS -->
+
+            <!-- TECHNOLOGY INSTALLS -->
+            <div class="menupage-item"
+                 ng-class="!$ctrl.IsFilterEnabled('technology_installs') ? 'disabled' : ''">
+                <div class="container-fluid container-fluid-no-padding heading" ng-click="$ctrl.IsFilterEnabled('technology_installs') && $ctrl.Toggle('technology_installs')">
+                    <div class="col-xs-10 title">
+                        Technology Installs
+                    </div>
+                    <div class="col-xs-2 text-right title-sign">
+                        <i class="fa" ng-class="$ctrl.IsExpanded('technology_installs') ? 'fa-minus' : 'fa-plus'"></i>
+                    </div>
+                </div>
+                <div class="list-content" ng-if="$ctrl.IsExpanded('technology_installs')">
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Keyword Search <i class="fa fa-info-circle"
+                                                  uib-tooltip="Search for one or more product keywords. For Boolean search use the operator NOT or AND to include and exclude a word from your search. You can also use &quot;quotation marks&quot; to search for phrases."
+                                                  tooltip-placement="bottom"></i>
+                            </div>
+                            <md-chips ng-model="$ctrl.Model.cp.keywordSearches"
+                                      md-transform-chip="$ctrl.TransformChip($chip, 'cp', 'keywordSearches')"
+                                      md-separator-keys="$ctrl.GetKeyCodes()"
+                                      md-require-match=""
+                                      put-chip-leavemouse
+                                      placeholder="{{ ::$ctrl.GetPlaceholder('cp', 'keywordSearches') }}"
+                                      class="input-box chips-input">
+                                <md-chip-template boolean-search-chip="{{ $chip.booleanSearch }}">
+                                    <span>
+                                        {{ $chip.name }}
+                                    </span>
+                                </md-chip-template>
+                                <button md-chip-remove="" class="btn-remove-tag">
+                                    <img src="/assets/images/close.png" alt="">
+                                </button>
+                            </md-chips>
+                            <div class="files-action browse-industries-container">
+                                <button class="btn btn-default btn-sm"
+                                        ng-click="$ctrl.OpenProductsBrowser()">
+                                    Browse Products
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Product Series
+                            </div>
+                            <div ng-dropdown-multiselect=""
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('cp', 'productSeriesIds')"
+                                 selected-model="$ctrl.Model.cp.productSeriesIds"
+                                 events="$ctrl.EventsFactory('cp', 'productSeriesIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('cp', 'productSeriesIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Product Category <i class="fa fa-info-circle"
+                                                    uib-tooltip="Search for one or more install product categories. For Boolean search use the operator NOT or AND to include and exclude a category from your search. You can also use &quot;quotation marks&quot; to search for phrases."
+                                                    tooltip-placement="bottom"></i>
+                            </div>
+                            <ui-select ng-keyup="$ctrl.OnKeypressPreventEnter($event, $select.search, 'cp', 'productCategoryIds')"
+                                       multiple
+                                       spinner-enabled="true"
+                                       uis-open-close="$ctrl.ClearList('cp', 'productCategoryIds')"
+                                       tagging-label="false"
+                                       ng-model="$ctrl.Model.cp.productCategoryIds">
+                                <ui-select-match
+                                        placeholder="{{ $ctrl.GetPlaceholder('cp', 'productCategoryIds') }}">
+                                    <span boolean-search-ui-select-chip>{{ $item.name }}</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in $ctrl.GetOptions('cp', 'productCategoryIds', true)"
+                                                   refresh="$ctrl.GetNoCachingLookup($select.search, 'cp', 'productCategoryIds', 1)"
+                                                   refresh-delay="800"
+                                                   ui-disable-choice="item.status == 'inactive'">
+                                    <span ng-if="item.status === 'inactive'">{{ item.name }}</span>
+                                    <span ng-if="item.status !== 'inactive'">{{ '#' + item.id + ' / ' + item.name }}</span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Vendor/Manufacturer Name <i class="fa fa-info-circle"
+                                                            uib-tooltip="Search for one or more install vendor or manufacturer names. For Boolean search use the operator NOT or AND to include and exclude a name from your search. You can also use &quot;quotation marks&quot; to search for phrases."
+                                                            tooltip-placement="bottom"></i>
+                            </div>
+                            <ui-select ng-keyup="$ctrl.OnKeypressPreventEnter($event, $select.search, 'cp', 'parentVendorIds')"
+                                       multiple
+                                       spinner-enabled="true"
+                                       uis-open-close="$ctrl.ClearList('cp', 'parentVendorIds')"
+                                       tagging-label="false"
+                                       ng-model="$ctrl.Model.cp.parentVendorIds">
+                                <ui-select-match
+                                        placeholder="{{ $ctrl.GetPlaceholder('cp', 'parentVendorIds') }}">
+                                    <span boolean-search-ui-select-chip>{{ $item.name }}</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in $ctrl.GetOptions('cp', 'parentVendorIds', true)"
+                                                   refresh="$ctrl.GetNoCachingLookup($select.search, 'cp', 'parentVendorIds', 1)"
+                                                   refresh-delay="800"
+                                                   ui-disable-choice="item.status == 'inactive'">
+                                    <span ng-if="item.status === 'inactive'">{{ item.name }}</span>
+                                    <span ng-if="item.status !== 'inactive'">{{ '#' + item.id + ' / ' + item.name }}</span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Product Name <i class="fa fa-info-circle"
+                                                uib-tooltip="Search for one or more product names. For Boolean search use the operator NOT or AND to include and exclude a product from your search. You can also use &quot;quotation marks&quot; to search for phrases."
+                                                tooltip-placement="bottom"></i>
+                            </div>
+                            <ui-select ng-keyup="$ctrl.OnKeypressPreventEnter($event, $select.search, 'cp', 'productNames')"
+                                       multiple
+                                       spinner-enabled="true"
+                                       uis-open-close="$ctrl.ClearList('cp', 'productNames')"
+                                       tagging-label="false"
+                                       ng-model="$ctrl.Model.cp.productNames">
+                                <ui-select-match
+                                        placeholder="{{ $ctrl.GetPlaceholder('cp', 'productNames') }}">
+                                    <span boolean-search-ui-select-chip>{{ $item.name }}</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in $ctrl.GetOptions('cp', 'productNames', true)"
+                                                   refresh="$ctrl.GetNoCachingLookup($select.search, 'cp', 'productNames', 1)"
+                                                   refresh-delay="800"
+                                                   ui-disable-choice="item.status == 'inactive'">
+                                    <span ng-if="item.status === 'inactive'">{{ item.name }}</span>
+                                    <span ng-if="item.status !== 'inactive'">{{ '#' + item.id + ' / ' + item.name }}</span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                PCs In Country <i class="fa fa-info-circle"
+                                                  uib-tooltip="The number of PCs installed in a country"
+                                                  tooltip-placement="bottom"></i>
+                            </div>
+                            <div class="col-xs-5">
+                                <input type="text"
+                                       ng-model="$ctrl.Model.cp.pcsInCountry.min"
+                                       ng-value="$ctrl.Model.cp.pcsInCountry.min | addCommas"
+                                       ng-keypress="$ctrl.preventNotNumericInput($event)"
+                                       placeholder="{{ ::$ctrl.GetPlaceholder('cp', 'pcsInCountry', 'min') }}"
+                                       class="input-box single-value-input" />
+                            </div>
+                            <div class="col-xs-2 text-center">
+                                <div class="item-subheader min-to-max">
+                                    to
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <input type="text"
+                                       ng-model="$ctrl.Model.cp.pcsInCountry.max"
+                                       ng-value="$ctrl.Model.cp.pcsInCountry.max | addCommas"
+                                       ng-keypress="$ctrl.preventNotNumericInput($event)"
+                                       placeholder="{{ ::$ctrl.GetPlaceholder('cp', 'pcsInCountry', 'max') }}"
+                                       class="input-box single-value-input"
+                                       ng-class="$ctrl.isInputGreaterThan($ctrl.Model.cp.pcsInCountry.min, $ctrl.Model.cp.pcsInCountry.max) ? 'input-error' : ''" />
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                Intensity of Match <i class="fa fa-info-circle"
+                                                      uib-tooltip="Intensity Score is a ranking of the confidence we have that the install does exist. 3 is 85% confidence, 2 is 70% confidence, and 1 is below 50% confidence"
+                                                      tooltip-placement="bottom"></i>
+                            </div>
+                            <div class="col-xs-12">
+                                <div ng-dropdown-multiselect
+                                     class="multiselect-checkbox-dropdown"
+                                     options="$ctrl.GetOptions('cp', 'intensityIds')"
+                                     selected-model="$ctrl.Model.cp.intensityIds"
+                                     events="$ctrl.EventsFactory('cp', 'intensityIds')"
+                                     extra-settings="$ctrl.Settings">
+                                    <toggle-dropdown>
+                                       <span class="custom-trigger">
+                                           {{ $ctrl.GetMultiselectElements('cp', 'intensityIds') }}
+                                       </span>
+                                    </toggle-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <min-max-fields-component
+                        data="multiRangeObject"
+                        element-type="'cp'"
+                        element-index="'0'"
+                        show-remove-button="true"
+                        ng-repeat="multiRangeObject in $ctrl.rangeFieldsData.cp.technologyCounts"></min-max-fields-component>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                TECHNOLOGY COUNTS <i class="fa fa-info-circle"
+                                                     uib-tooltip="To add additional technology filters with count ranges, choose from the below dropdown."
+                                                     tooltip-placement="bottom"></i>
+                            </div>
+                            <div class="col-xs-12">
+                                <single-dropdown-component
+                                        class="scSelectBefore"
+                                        placeholder="'Select a Technology'"
+                                        ng-model="$ctrl.selectedItem.cp"
+                                        elements="$ctrl.rangeDropdownsGroups.cp"
+                                        disabled="!$ctrl.rangeDropdownEnabled.cp"
+                                        label="label"
+                                        after-select="$ctrl.addRangeGroup('cp')"
+                                ></single-dropdown-component>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /TECHNOLOGY INSTALLS -->
+
+            <!-- CONTENT -->
+            <div class="menupage-item"
+                 ng-class="!$ctrl.IsFilterEnabled('content') ? 'disabled' : ''">
+                <div class="container-fluid container-fluid-no-padding heading" ng-click="$ctrl.Toggle('content')">
+                    <div class="col-xs-10 title">
+                        CONTENT
+                    </div>
+                    <div class="col-xs-2 text-right title-sign">
+                        <i class="fa" ng-class="$ctrl.IsExpanded('content') ? 'fa-minus' : 'fa-plus'"></i>
+                    </div>
+                </div>
+                <div class="list-content" ng-if="$ctrl.IsExpanded('content')">
+
+                    <div class="container-fluid container-fluid-no-padding">
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Content Markets
+                            </div>
+                            <div ng-dropdown-multiselect=""
+                                    class="multiselect-checkbox-dropdown"
+                                    options="$ctrl.GetOptions('content', 'contentMarketsIds')"
+                                    selected-model="$ctrl.Model.content.contentMarketsIds"
+                                    events="$ctrl.EventsFactory('content', 'contentMarketsIds')"
+                                    extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('content', 'contentMarketsIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                keyword
+                            </div>
+                            <ui-select ng-keyup="$ctrl.OnKeypressPreventEnter($event, $select.search, 'content', 'keywordIds')"
+                                       multiple
+                                       spinner-enabled="true"
+                                       uis-open-close="$ctrl.ClearList('content', 'keywordIds')"
+                                       tagging-label="false"
+                                       ng-model="$ctrl.Model.content.keywordIds">
+                                <ui-select-match
+                                        placeholder="{{ ::$ctrl.GetPlaceholder('content', 'keywordIds') }}">
+                                    <span boolean-search-ui-select-chip>{{ $item.name }}</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item in $ctrl.GetOptions('content', 'keywordIds', true)"
+                                                   refresh="$ctrl.GetNoCachingLookup($select.search, 'content', 'keywordIds', 1)"
+                                                   refresh-delay="800"
+                                                   ui-disable-choice="item.status == 'inactive'">
+                                    {{ item.name }}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Content type
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('content', 'contentTypeIds')"
+                                 selected-model="$ctrl.Model.content.contentTypeIds"
+                                 events="$ctrl.EventsFactory('content', 'contentTypeIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('content', 'contentTypeIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Recommended use <i class="fa fa-info-circle"
+                                                   uib-tooltip="The funnel phase in which we recommend using the content "
+                                                   tooltip-placement="bottom"></i>
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('content', 'recommendedUseIds')"
+                                 selected-model="$ctrl.Model.content.recommendedUseIds"
+                                 events="$ctrl.EventsFactory('content', 'recommendedUseIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('content', 'recommendedUseIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding">
+                            <div class="item-subheader additional-subheader-margin">
+                                Published Date
+                            </div>
+                            <div class="col-xs-5">
+                                <input uib-datepicker-popup="MM/dd/yyyy"
+                                       ng-model="$ctrl.Model.content.publishDateFrom"
+                                       is-open="publishDateFrom"
+                                       ng-click="publishDateFrom = !publishDateFrom"
+                                       show-button-bar="false"
+                                       showWeeks="false"
+                                       class="datepicker" />
+                            </div>
+                            <div class="col-xs-2 text-center">
+                                <div class="item-subheader min-to-max">to</div>
+                            </div>
+                            <div class="col-xs-5">
+                                <input uib-datepicker-popup="MM/dd/yyyy"
+                                       ng-model="$ctrl.Model.content.publishDateTo"
+                                       minDate="$ctrl.Model.content.publishDateFrom"
+                                       is-open="publishDateTo"
+                                       ng-click="publishDateTo = !publishDateTo"
+                                       show-button-bar="false"
+                                       showWeeks="false"
+                                       class="datepicker" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">
+                            <div class="item-subheader">
+                                Author
+                            </div>
+                            <div ng-dropdown-multiselect
+                                 class="multiselect-checkbox-dropdown"
+                                 options="$ctrl.GetOptions('content', 'authorIds')"
+                                 selected-model="$ctrl.Model.content.authorIds"
+                                 events="$ctrl.EventsFactory('content', 'authorIds')"
+                                 extra-settings="$ctrl.Settings">
+                                <toggle-dropdown>
+                                    <span class="custom-trigger">
+                                        {{ $ctrl.GetMultiselectElements('content', 'authorIds') }}
+                                    </span>
+                                </toggle-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /CONTENT -->
+
+        </div>
+    </div>
+</div>

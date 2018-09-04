@@ -1,0 +1,64 @@
+// Extra small screen / phone
+$screen-xs:                  480px !default;
+$screen-xs-min:              $screen-xs !default;
+$screen-phone:               $screen-xs-min !default;
+
+// Small screen / tablet
+$screen-sm:                  768px !default;
+$screen-sm-min:              $screen-sm !default;
+$screen-tablet:              $screen-sm-min !default;
+
+// Medium screen / desktop
+$screen-md:                  992px !default;
+$screen-md-min:              $screen-md !default;
+$screen-desktop:             $screen-md-min !default;
+
+// Large screen / wide desktop
+$screen-lg:                  1280px !default;
+$screen-lg-min:              $screen-lg !default;
+$screen-lg-desktop:          $screen-lg-min !default;
+
+// Very Large screen / wide desktop
+$screen-xl:                  1440px !default;
+$screen-xl-min:              $screen-xl !default;
+$screen-xl-desktop:          $screen-xl-min !default;
+
+// custom break point: 1024px
+$screen-width-1024:          1024px;
+
+$grid-gutter-width:          10px;
+
+@media (min-width: $screen-md) {
+  $grid-gutter-width: 20px;
+}
+
+// Define colors with short description
+$primary-white:              #ffffff; // Primary white nothing else
+$light-gray:                 #f3f3f3; // Used for background
+$medium-gray:                #9e9e9e; // Used to separate bundle detail
+$darker-gray:                #999999; //
+$darker-gray-second:         #858585; //
+$darker-gray-third:          #4F4945; // Saved Query name label
+$darkest-gray:               #3e3935; // Header color
+$slate-gray:                 #423D39; // Research bite - small text
+$primary-black:              #000000; // Primary black color
+$turquoise:                  #29BDB3; // Content hover metadata
+$light-turquoise:            #00BCB4; // Main app color
+$medium-turquoise:           #04B6AE; // Research bite - medium-sized text
+$dark-turquoise:             #46797B; // Darker main app color
+$dark-green:                 #085156; // Color for small buttons
+$main-orange:                #FF7F3F; // Main orange color
+$main-orange-hover:          #F6A623; // Main orange color hover
+$main-yellow:                #F5C400; // Main yellow color
+$main-yellow-hover:          #FFE300; // Main yellow hover
+$light-blue:                 #4b91e3; // used for checkboxes in tables
+$error-color:                #D0021B; // error messages, error borders
+$success-color:              #00BCB4; // success messages
+$warning-color:              #D0912A; // warning messages
+
+$forest-green:               #006769; // random research bite
+$magenta:                    #BD147C; // random research bite 
+$purple:                     #2C0040; // random research bite
+$orange:                     #F39201; // random research bite
+$yellow:                     #F6AD03; // random research bite
+$dark-blue:                  #081C53; // random research bite

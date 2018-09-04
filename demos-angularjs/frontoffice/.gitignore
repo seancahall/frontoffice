@@ -1,0 +1,17 @@
+/node_modules/*
+
+# IDE files
+.idea/*
+
+# generated files
+package-lock.json
+
+# Git merging temp files
+*.orig
+VERSION.html
+
+# Build
+/webpack/public
+
+.env*
+tmp-*

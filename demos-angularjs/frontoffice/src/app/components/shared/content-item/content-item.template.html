@@ -1,0 +1,69 @@
+<div class="content-items">
+
+    <div class="mask"></div>
+    <div ng-if="$ctrl.content.contentTypeId === 9 || $ctrl.content.contentTypeId === 10" class="video-content"></div>
+    <div class="hover-content">
+        <div>
+            <div ng-hide="$ctrl.content.numberOfPiecesBundled < 1" ng-if="!$ctrl.isSocialTilesType(content) && $ctrl.content.contentTypeId !== 22 && $ctrl.content.contentTypeId !== 15 && $ctrl.content.contentTypeId !== 18 && $ctrl.content.contentTypeId !== 9 && $ctrl.content.contentTypeId !== 10 && $ctrl.content.contentTypeId !== 7" ng-class="{'hover-content-title': !$ctrl.content.isMediumText, 'rb-hover-content-title': !!$ctrl.content.isMediumText}">
+                Content Bundle: {{$ctrl.content.numberOfPiecesBundled}} pieces
+            </div>
+            <div ng-class="{'hover-content-title': !$ctrl.content.isMediumText, 'rb-hover-content-title': !!$ctrl.content.isMediumText}">
+                Content type: {{$ctrl.content.contentType}}
+            </div>
+            <div ng-if="!$ctrl.isSocialTilesType(content) && $ctrl.content.contentTypeId !== 22 && $ctrl.content.contentTypeId !== 15 && $ctrl.content.contentTypeId !== 18 && $ctrl.content.contentTypeId !== 9 && $ctrl.content.contentTypeId !== 10 && $ctrl.content.contentTypeId !== 7" ng-class="{'hover-content-title': !$ctrl.content.isMediumText, 'rb-hover-content-title': !!$ctrl.content.isMediumText}">
+                Content ID: {{$ctrl.content.contentId}}
+            </div>
+            <p></p>
+            <div ng-hide="$ctrl.isVideoType(content) || $ctrl.isSocialTilesType(content) || $ctrl.content.contentTypeId === 15 || $ctrl.content.contentTypeId === 18" ng-if="$ctrl.content.contentTypeId !== 22 && $ctrl.content.contentTypeId !== 9 && $ctrl.content.contentTypeId !== 10 && $ctrl.content.contentTypeId !== 7" class="hover-content-info">
+                <div flex="100" class="hover-content-info-title">Recommended use:</div>
+                <div flex="100">
+                    <ul>
+                        <li ng-repeat="usage in $ctrl.content.recommendedUsages">
+                            {{ usage }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="hover-content-button">
+                <!-- for some reason, only the in-line style will work here -->
+                <div class ng-hide="$ctrl.isiOSMobileDevice || $ctrl.content.contentTypeId === 17" flex="50"  style="float: left; margin-left: 20%; margin-right: 5px;">
+                    <a ng-if="$ctrl.content.mediaType != 'PDF'" ng-click="$ctrl.announceClick(null, $ctrl.content, true); $ctrl.gridViewDownload($ctrl.content.contentType, $ctrl.content)">
+                        <img src="/assets/images/download_icon.png" alt="" title="Download" class="hover-icon"/>
+                    </a>
+                    <div dropdown-append-to-body="true" ng-if="!$ctrl.isiOSMobileDevice && $ctrl.content.mediaType == 'PDF'" uib-dropdown>
+                        <a>
+                            <img uib-dropdown-toggle src="/assets/images/download_icon.png" alt="" title="Download Options" class="hover-icon"/>
+                        </a>
+                        <ul class="dropdown-menu rb-content-ul" uib-dropdown-menu role="menu">
+                            <li ng-repeat="item in $ctrl.menuList" role="menu-item">
+                                <a ng-click="$ctrl.announceClick(item, $ctrl.content, true); $ctrl.gridViewDownload(item, $ctrl.content);">{{ item.name }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div ng-show="$ctrl.content.contentTypeId === 17" flex="50" ng-class="$ctrl.getIconMargin($ctrl.content)">
+                    <input ng-value="$ctrl.content.contentText" id="x-data-{{$ctrl.content.contentId}}" class="force-select">
+                    <a ngclipboard
+                       ng-if="$ctrl.isCopyAllowed()"
+                       data-clipboard-target="#x-data-{{$ctrl.content.contentId}}"
+                       ng-click="$ctrl.copyDone($ctrl.content)"><img src="/assets/images/copy.png" alt="" class="hover-icon" title="Copy Content"></a>
+                    <a ng-if="!$ctrl.isCopyAllowed()" ng-click="$ctrl.copyDone($ctrl.content)" class="rb-hover-link"><img src="/assets/images/copy.png" title="Copy Content" alt="" class="hover-icon"></a>
+                </div>
+                <div flex="50" class="rb-info-icon"><a ng-click="$ctrl.openBundleInfo($ctrl.content)" class="rb-hover-link"><img src="/assets/images/info_icon.png" alt="" class="hover-icon"  title="View Details"></a></div>
+                <!-- TRIGGER PDF VIEWER HERE -->
+                <div ng-if="$ctrl.content.mediaType === 'PDF' || $ctrl.content.mediaType === 'PIC'">
+                    <a ng-click="$ctrl.announceClick($ctrl.menuList[1], $ctrl.content, false)">
+                        <img src="/assets/images/eye-big-white.gif" title="Preview" class="rb-preview-icon" alt="" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="$ctrl.content.contentTypeId === 17" class="content-items">
+        <div ng-class="$ctrl.researchBiteTextClass">
+            {{$ctrl.content.contentText}}
+        </div>
+    </div>
+    <img ng-hide="$ctrl.content.contentTypeId === 17" onError="this.onerror=null;this.src='/assets/images/grid-default.png';"
+         class="content-items-image image-bite" ng-src="{{$ctrl.content.thumbnailUrl}}" alt="" style="max-height: 472px; max-width: 100%"/>
+</div>

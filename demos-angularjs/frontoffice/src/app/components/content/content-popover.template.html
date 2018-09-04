@@ -1,0 +1,52 @@
+<!-- replaces the component <content-abstract> VERSION4-3502 -->
+<div class="popover-content">
+    <div class="popover-content__close" ng-click="$ctrl.close()">x</div>
+  <section class="abstract-spacer">
+      {{ content.title }}
+  </section>
+  <article class="abstract-spacer" ng-if="content.contentTypeId !== 22">
+          {{ content.contentText ? content.contentText.substring(0,300) + '...' : '' }}
+  </article>
+  <section>
+        <div>
+            <div class="download-icon" ng-if="content.contentTypeId !== 17" style="float: left; margin-left: 5%; margin-right: 5px;">
+                <a ng-if="content.mediaType !== 'PDF'" ng-click="$ctrl.announceClick(null, content, true)">
+                    <img src="/assets/images/download_icon_grey.png" alt="" title="Download Options" class="list-view-icon"/>
+                </a>
+                <div ng-if="content.mediaType == 'PDF'" uib-dropdown>
+                    <a>
+                        <img uib-dropdown-toggle src="/assets/images/download_icon_grey.png" alt="" title="Download Options" class="list-view-icon"/>
+                    </a>
+                    <ul class="dropdown-menu content-ul" uib-dropdown-menu role="menu">
+                        <li ng-repeat="item in $ctrl.menuList" role="menu-item">
+                            <a ng-click="$ctrl.announceClick(item, content, true)">{{item.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div ng-show="content.contentTypeId === 17">
+                <input ng-value="content.contentText" id="x-data-{{content.contentId}}" class="force-select">
+                <a ngclipboard
+                    ng-if="$ctrl.isCopyAllowed()"
+                    data-clipboard-target="#x-data-{{content.contentId}}"
+                    ng-click="$ctrl.copyDone(content)"><img src="/assets/images/copy_icon_grey.png" alt="" class="hover-icon" title="Copy Content"></a>
+                <a ng-if="!$ctrl.isCopyAllowed()" ng-click="$ctrl.copyDone(content)"><img src="/assets/images/copy_icon_grey.png" alt="" class="hover-icon" title="Copy Content"></a>
+            </div>
+            <div>
+                <a ng-click="$ctrl.openBundleInfo(content)">
+                    <img src="/assets/images/info_icon_grey.png" alt="" title="More Info" class="popover-info-icon"/>
+                </a>
+            </div>
+            <div class="popover-view">
+                <a ng-click="$ctrl.close(); $ctrl.announceClick($ctrl.menuList[1], content, false)">
+                    <img src="/assets/images/eye-big-grey.gif" title="Preview" alt="" class="popover-view-icon"/>
+                </a>
+            </div>
+            <div class="float-right">
+                <ul>
+                    <li ng-repeat="use in content.recommendedUsages">{{ use }}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>

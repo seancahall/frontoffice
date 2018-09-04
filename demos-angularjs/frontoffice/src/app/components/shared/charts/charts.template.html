@@ -1,0 +1,230 @@
+<div class="container-fluid container-fluid-no-padding hidden-xs hidden-sm" ng-show="$ctrl.page === 'enterprises' || $ctrl.page === 'currentpurchases'">
+    <div class="chartDiv col-md-4 col-lg-4">
+        <div class="white-bg">
+            <div class="chartsSpiner" ng-show="$ctrl.IsLoading()">
+                <div class="spinerIcon">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+            <div class="donCharts">
+                <span class="chartName">Account Revenue in U.S. Dollars</span>
+                <div class="no-results" ng-if="!$ctrl.data.length && !$ctrl.IsLoading()">
+                    No results found
+                </div>
+                <div class="chart-wrapper" style="height: 216px">
+                    <span class="doughnut-tooltip-custom"></span>
+                    <canvas ng-if="$ctrl.data.length"
+                            id="doughnut"
+                            class="chart chart-doughnut"
+                            chart-data="$ctrl.data"
+                            chart-labels="$ctrl.labels"
+                            chart-colors="$ctrl.colors"
+                            chart-options="$ctrl.options">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chartDiv col-md-4 col-lg-4">
+        <div class="white-bg">
+            <div class="chartsSpiner" ng-show="$ctrl.IsLoading()">
+                <div class="spinerIcon">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+            <span class="chartName">industries</span>
+            <div class="no-results" ng-if="!$ctrl.indBar.length && !$ctrl.IsLoading()">
+                No results found
+            </div>
+            <div ng-if="$ctrl.indBar.length" ng-repeat="bar in $ctrl.indBar" class="barElement container-fluid container-fluid-no-padding">
+                <md-tooltip md-direction="top">
+                    <div ng-attr-style="background-color: {{ bar.color }}" class="barColor"></div>
+                    <span class="tt_bar">{{ bar.names }} : {{ bar.count | number: 0 }}</span>
+                </md-tooltip>
+                <div class="col-xs-6">
+                    <div class="progressInd">
+                        <div ng-attr-style="left:{{ 100-bar.size }}%; background-color:{{ bar.color }}" class="progressD"></div>
+                    </div>
+                </div>
+                <div class="barTag col-xs-6">{{ bar.names }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="chartDiv  col-md-4 col-lg-4">
+        <div class="white-bg">
+            <div class="chartsSpiner" ng-show="$ctrl.IsLoading()">
+                <div class="spinerIcon">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+            <span class="chartName"> Verified Installs </span>
+            <div class="bubble-box">
+                <div class="no-results" ng-if="!$ctrl.babbleData.length && !$ctrl.IsLoading()">
+                    No results found
+                </div>
+                <gh-visualization val="$ctrl.babbleData" ng-class="!$ctrl.babbleData.length ? 'hide' : ''"></gh-visualization>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid container-fluid-no-padding hidden-xs hidden-sm" ng-show="$ctrl.page === 'contacts'">
+    <div class="chartDiv col-md-4 col-lg-4">
+        <div class="white-bg">
+            <div class="chartsSpiner" ng-show="$ctrl.IsLoading()">
+                <div class="spinerIcon">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+            <div class="donCharts">
+                <span class="chartName">Account Revenue in U.S. Dollars</span>
+                <div class="no-results" ng-if="!$ctrl.dataRevenue.length && !$ctrl.IsLoading()">
+                    No results found
+                </div>
+                <div class="chart-wrapper chart-account-revenue-in-us-dollars" style="height: 216px"
+                     ng-mouseover="chartFirst = true"
+                     ng-mouseleave="chartFirst = false"
+                     ng-if="$ctrl.dataRevenue.length">
+                    <span ng-if="chartFirst" class="doughnut-tooltip-custom"></span>
+                    <canvas id="doughnuts"
+                            class="chart chart-doughnut"
+                            chart-data="$ctrl.dataRevenue"
+                            chart-labels="$ctrl.labelsRevenue"
+                            chart-colors="$ctrl.colors"
+                            chart-dataset-override="$ctrl.dataset"
+                            chart-options="$ctrl.optionsAccountRevenue">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chartDiv col-md-4 col-lg-4">
+        <div class="white-bg">
+            <div class="chartsSpiner" ng-show="$ctrl.IsLoading()">
+                <div class="spinerIcon">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+            <div class="donCharts">
+                <span class="chartName">management levels</span>
+                <div class="no-results" ng-if="!$ctrl.dataMengLevel.length">
+                    No results found
+                </div>
+                <div class="chart-wrapper chart-management-levels" style="height: 216px" ng-mouseover="chartSecond = true" ng-mouseleave="chartSecond = false" ng-if="$ctrl.dataMengLevel.length && !$ctrl.IsLoading()">
+                    <span class="doughnut-tooltip-custom"></span>
+                    <canvas id="doughnut2"
+                            style="max-height: 200px; width: 100%"
+                            class="chart chart-doughnut"
+                            chart-data="$ctrl.dataMengLevel"
+                            chart-labels="$ctrl.labelsML"
+                            chart-colors="$ctrl.colors"
+                            chart-dataset-override="$ctrl.dataset"
+                            chart-options="$ctrl.optionsManagementLevels">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chartDiv geoChart col-md-4 col-lg-4">
+        <div class="white-bg">
+            <div class="chartsSpiner" ng-show="$ctrl.IsLoading()">
+                <div class="spinerIcon">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+            <span class="chartName"> Location </span>
+            <div class="no-results" ng-if="!$ctrl.dataMengLevel.length && !$ctrl.IsLoading()">
+                No results found
+            </div>
+            <div ng-style="{ opacity: $ctrl.dataMengLevel.length && !$ctrl.IsLoading() ? '1' : '0' }">
+                <span class="selectContinents {{$ctrl.selectedRegion.eu.active}}"
+                      ng-click="$ctrl.choseC('EU')">
+                    Europe
+                </span>
+                <span class="selectContinents {{$ctrl.selectedRegion.us.active}}"
+                      ng-click="$ctrl.choseC('USA')">
+                    USA
+                </span>
+                <span class="selectContinents {{$ctrl.selectedRegion.ca.active}}"
+                      ng-click="$ctrl.choseC('Canada')">
+                    Canada
+                </span>
+                <div id="geochart-colors" style="width: 100%; height: 80%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid container-fluid-no-padding hidden-xs hidden-sm" ng-show="$ctrl.page === 'futurepurchases'">
+    <div class="chartDiv col-md-4 col-lg-4">
+        <div flex class="white-bg">
+            <div class="chartsSpiner" ng-show="$ctrl.IsLoading()">
+                <div class="spinerIcon">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+            <span class="chartName">Account Revenue in U.S. Dollars</span>
+            <div class="no-results" ng-if="!$ctrl.data.length && !$ctrl.IsLoading()">
+                No results found
+            </div>
+            <div class="chart-wrapper" style="height: 216px" ng-if="$ctrl.data.length">
+                <span class="doughnut-tooltip-custom"></span>
+                <canvas height="216" flex="nogrow"
+                        class="chart chart-doughnut"
+                        chart-data="$ctrl.data" chart-labels="$ctrl.labels" chart-colors="$ctrl.colors" chart-dataset-override="$ctrl.dataset"
+                        chart-options="$ctrl.options">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <div class="chartDiv col-md-4 col-lg-4">
+        <div class="white-bg">
+            <div class="chartsSpiner" ng-show="$ctrl.IsLoading()">
+                <div class="spinerIcon">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+            <span class="chartName">industries</span>
+            <div class="no-results" ng-if="!$ctrl.indBar.length && !$ctrl.IsLoading()">
+                No results found
+            </div>
+            <div ng-if="$ctrl.indBar.length" ng-repeat="bar in $ctrl.indBar" class="barElement container-fluid container-fluid-no-padding">
+                <md-tooltip md-direction="top">
+                    <div ng-attr-style="background-color: {{ bar.color }}" class="barColor"></div>
+                    <span class="tt_bar">{{ bar.names }} : {{ bar.count | number: 0 }}</span>
+                </md-tooltip>
+                <div class="col-xs-6">
+                    <div class="progressInd">
+                        <div ng-attr-style="left:{{ 100-bar.size }}%; background-color:{{ bar.color }}" class="progressD"></div>
+                    </div>
+                </div>
+                <div class="barTag col-xs-6">{{ bar.names }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="chartDiv col-md-4 col-lg-4">
+        <div class="white-bg">
+            <div class="chartsSpiner" ng-show="$ctrl.IsLoading()">
+                <div class="spinerIcon">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+            <span class="chartName">Purchase Intent Ranking Percentile <i class="fa fa-info-circle"
+                                                                          uib-tooltip="The ranking percentage based on the data available for each opportunity "
+                                                                          tooltip-placement="bottom"></i></span>
+            <div class="no-results" ng-if="!$ctrl.Vdata.length && !$ctrl.IsLoading()">
+                No results found
+            </div>
+            <div class="chart-bar-wrapper" style="height: 216px" ng-if="$ctrl.Vdata.length">
+                <span class="bar-tooltip-custom"></span>
+                <canvas id="bar" class="chart chart-bar"
+                        chart-data="$ctrl.Vdata"
+                        chart-dataset-override="$ctrl.Vdataset"
+                        chart-options="$ctrl.Voptions"
+                        chart-colors="$ctrl.Vcolors"
+                        chart-labels="$ctrl.Vlabels">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>

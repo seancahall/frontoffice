@@ -1,0 +1,48 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "modules": true,
+            "experimentalObjectRestSpread": true
+        }
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended"
+    ],
+    "plugins": [
+        "eslint-plugin-angular"
+    ],
+    "globals": {
+        "ENDPOINT": true,
+        "OAUTH": true,
+        "VERSION": true,
+        "angular": true,
+        "moment": true,
+        "_": true,
+        "Highcharts": true,
+        "$": true,
+        "window": true,
+        "google": true, // That need to be rewrited, need to be a angular plugin instead of google native,
+        "document": true,
+        "mixpanel": true, // That need to be moved to angular plugin
+        "Appcues": true, // That need to be moved to angular plugin,
+        "PDFJS": true, // That need to be moved to angular plugin,
+        "FileReader": true,
+        "Uint8Array": true,
+        "ArrayBuffer": true,
+        "piTracker": true,
+        "d3": true,
+        "Image": true,
+        "atob": true,
+        "btoa": true
+    },
+    "rules": {
+        "no-console": "warn"
+    }
+}

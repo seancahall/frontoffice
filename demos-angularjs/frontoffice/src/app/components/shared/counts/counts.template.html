@@ -1,0 +1,17 @@
+<div class="container-fluid container-fluid-no-padding counts-container">
+    <div class="counts {{ $ctrl.getClass() }}"
+         ng-class="{
+            'counts__margin-right' : !$last
+        }"
+         ng-repeat="count in $ctrl.counts">
+        <div ng-class="{ 'BlurSpinner' : $ctrl.isLoading() }" class="counts__separator">
+            <div ng-switch="count.number">
+                <div ng-switch-when="0"><b>--</b></div>
+                <div ng-switch-default class="counts__number">
+                    {{ count.number | number }}
+                </div>
+            </div>
+            <span class="counts__title">{{ count.title }}</span>
+        </div>
+    </div>
+</div>

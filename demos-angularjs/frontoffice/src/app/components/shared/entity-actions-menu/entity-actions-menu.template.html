@@ -1,0 +1,41 @@
+<div ng-if="$ctrl.showMenu()" uib-dropdown class="full-width-dropdown">
+    <img ng-if="::$ctrl.menuTrigger === 'arrow-right-green'"
+         uib-dropdown-toggle
+         src="/assets/images/etc/arrow-right-green.png"
+         alt=""
+         class="arrow" />
+    <button ng-if="::$ctrl.menuTrigger === 'button-send-to'"
+            uib-dropdown-toggle
+            style="width: 100%;"
+            class="btn btn-orange">
+        <span ng-if="!$ctrl.canDataBeSynced()">Send To</span>
+        <span ng-if="$ctrl.canDataBeSynced()">Sync</span>
+    </button>
+
+    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+        <li ng-if="$ctrl.showSingleExportToSalesForceOption()">
+            <!-- CRM EXPORT: OPTION 1 - displayed for export always -->
+            <a ng-click="$ctrl.singleExportToSalesForce()" ng-if="$ctrl.singleExportToSalesforceEnabled">
+                {{ $ctrl.singleExportToSalesforceLabel }}
+            </a>
+            <span ng-if="!$ctrl.singleExportToSalesforceEnabled" ng-click="$ctrl.onClickDisabled($event)" class="disabled-link">
+                {{ $ctrl.singleExportToSalesforceLabel }}
+            </span>
+        </li>
+        <li ng-if="$ctrl.showSingleExportToSalesForceOption() && $ctrl.canDataBeSynced()">
+            <!-- CRM EXPORT: OPTION 2 - displayed only for sync -->
+            <a ng-click="$ctrl.singleExportToSalesForce(true)">
+                Sync All Data To Salesforce
+            </a>
+        </li>
+        <li ng-if="::$ctrl.showFlagOption">
+            <flag-data entity-type="'{{ ::$ctrl.entityType }}'"
+                       entity-id="::$ctrl.entityId"
+                       trigger-type="link"
+                       class="small"></flag-data>
+        </li>
+        <li ng-if="::$ctrl.showViewOption">
+            <a ng-click="$ctrl.showView()">View</a>
+        </li>
+    </ul>
+</div>

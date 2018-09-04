@@ -1,0 +1,14 @@
+<form>
+
+    <loading-spinner-component ng-show="$ctrl.loading"></loading-spinner-component>
+
+    <ul>
+        <tree-element-component
+                category="category"
+                expand="$ctrl.expand()"
+                toggle="$ctrl.toggle()"
+                ng-repeat="category in $ctrl.data">
+        </tree-element-component>
+    </ul>
+
+</form>

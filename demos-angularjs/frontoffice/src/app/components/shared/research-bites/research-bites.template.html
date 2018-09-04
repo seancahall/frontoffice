@@ -1,0 +1,75 @@
+<div class="row">
+    <!-- first row -->
+    <div class="text-bite large-text-bite col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-class="$ctrl.largeBiteColor">
+        <content-item-component data="$ctrl.researchBitesSort.largeText"></content-item-component>
+    </div>
+    <!-- 2nd row if even rowcount -->
+    <div ng-if="$parent.$even">
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 text-bite">
+            <div class="rb-image">
+                <content-item-component data="$ctrl.researchBitesSort.graph[0]"></content-item-component>
+            </div>
+            <div class="small-text-bite" ng-class="$ctrl.smallBiteColor">
+                <content-item-component data="$ctrl.researchBitesSort.smallText"></content-item-component>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div>
+                <content-item-component data="$ctrl.researchBitesSort.otherTypes[0]"></content-item-component>
+            </div>
+            <div class="lower-rb-image">
+                <content-item-component data="$ctrl.researchBitesSort.graph[1]"></content-item-component>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 content-items">
+            <div class="text-bite medium-text-bite" ng-class="$ctrl.mediumBiteColor">
+                <content-item-component data="$ctrl.researchBitesSort.mediumText"></content-item-component>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 lower-rb-image">
+                    <content-item-component data="$ctrl.researchBitesSort.graph[2]"></content-item-component>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 lower-rb-image">
+                    <content-item-component data="$ctrl.researchBitesSort.graph[3]"></content-item-component>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 2nd row if odd rowcount -->
+    <div ng-if="$parent.$odd">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 content-items">
+            <div class="text-bite medium-text-bite" ng-class="$ctrl.mediumBiteColor">
+                <content-item-component data="$ctrl.researchBitesSort.mediumText"></content-item-component>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 lower-rb-image">
+                    <content-item-component data="$ctrl.researchBitesSort.graph[2]"></content-item-component>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 lower-rb-image">
+                    <content-item-component data="$ctrl.researchBitesSort.graph[3]"></content-item-component>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 text-bite">
+            <div class="rb-image">
+                <content-item-component data="$ctrl.researchBitesSort.graph[0]"></content-item-component>
+            </div>
+            <div class="small-text-bite" ng-class="$ctrl.smallBiteColor">
+                <content-item-component data="$ctrl.researchBitesSort.smallText"></content-item-component>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div>
+                <content-item-component data="$ctrl.researchBitesSort.otherTypes[0]"></content-item-component>
+            </div>
+            <div class="lower-rb-image">
+                <content-item-component data="$ctrl.researchBitesSort.graph[1]"></content-item-component>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- 3rd row -->
+    <div ng-repeat="content in $ctrl.researchBitesSort.otherTypes" class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-if="!$first">
+        <content-item-component data="content"></content-item-component>
+    </div>
+</div>

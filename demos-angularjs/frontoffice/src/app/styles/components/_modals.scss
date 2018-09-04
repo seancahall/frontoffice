@@ -1,0 +1,53 @@
+.modal-header {
+  &-close {
+    float: right;
+    color: $darker-gray;
+    cursor: pointer;
+  }
+  .modal-title {
+    font-size: 15px;
+  }
+}
+
+.modal-content {
+  border-radius: 4px;
+  box-shadow: 0 7px 8px -4px rgba(0,0,0,.2), 0 13px 19px 2px rgba(0,0,0,.14), 0 5px 24px 4px rgba(0,0,0,.12);
+  border: none;
+}
+
+.modal-footer {
+  .btn {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.modal-body {
+  max-height: 535px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &__export-bulk {
+    max-height: 600px;
+  }
+
+  &__export-csv {
+    max-height: 990px;
+  }
+
+  &__integration-settings {
+    min-height: 520px;
+    max-height: 600px;
+  }
+
+  &__form-message {
+    text-transform: none !important;
+    font-size: 12px;
+
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+}

@@ -1,0 +1,10 @@
+.help-message {
+  color: $darker-gray-second;
+  font-weight: 500;
+  padding: 8px 0;
+  a {
+    color: $darker-gray-second;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+}

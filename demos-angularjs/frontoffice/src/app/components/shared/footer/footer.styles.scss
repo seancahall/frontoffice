@@ -1,0 +1,33 @@
+.footer_content {
+  margin: 0 auto;
+  display: inline-block;
+}
+
+.footer_content ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer_content li {
+  display: inline-block;
+  padding: 0 5px 5px;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.footer_content li a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer_block {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 25px;
+  background-color: #3e3935;
+  z-index: 100;
+  text-align: center;
+}

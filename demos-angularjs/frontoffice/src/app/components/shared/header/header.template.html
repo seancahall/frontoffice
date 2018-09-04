@@ -1,0 +1,133 @@
+<header class="header-component">
+    <div class="header-component__impersonated" ng-if="$ctrl.IsImpersonated()">
+        You are using Lead Essentials as {{ $ctrl.GetImpersonationUser() }}.
+        <a href="#" ng-click="$ctrl.SignOutImpersonated()">SIGN OUT</a>
+    </div>
+
+    <div class="header-component__toolbar" ng-if="$ctrl.IsLogged()">
+
+        <!-- Notifications -->
+        <!-- TODO - notifications are not ready yet-->
+
+        <!-- Session component -->
+        <session-component></session-component>
+
+        <!-- TOP-RIGHT Dropdown with user actions -->
+        <uib-dropdown class="header-component__toolbar__user-section uib-dropdown">
+            <uib-dropdown-toggle>
+                 {{ $ctrl.userInfo.fullUserName }} <i class="fa fa-caret-down"></i>
+            </uib-dropdown-toggle>
+            <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu aria-labelledby="simple-dropdown">
+                <li ng-if="$ctrl.userInfo.remainingContentToDownload !== null" class="header-component__toolbar__user-section__user-info">
+                    <p>You have:</p>
+                    <p>{{ $ctrl.userInfo.remainingRecordsToDownload }} Data Records Remaining</p>
+                    <p>{{ $ctrl.userInfo.remainingContentToDownload }} Content Records</p>
+                    <p> in {{ $ctrl.userInfo.numberofMarkets }} Markets</p>
+                </li>
+                <li>
+                    <a ng-if="$ctrl.showIntegrationsLink()" ui-sref="app.integrations()">Integrations</a>
+                    <a href ng-click="$ctrl.ReloadCache()" ng-if="$ctrl.IsInternalBackofficeUser()">Reload Cache</a>
+                    <a href ng-click="$ctrl.ClearCache()" ng-if="$ctrl.IsInternalBackofficeUser()">Clear Cache</a>
+                    <a href ng-click="$ctrl.Logout()">Logout</a>
+                </li>
+            </ul>
+        </uib-dropdown>
+
+    </div>
+
+    <div class="header-component__container">
+        <div class="header-component__container__logo">
+            <img src="/assets/images/logo_leadessentials.png" alt="Leadessentials">
+            <span class="header-component__container__logo__version">{{ $ctrl.GetVersion() }}</span>
+        </div>
+        <div class="header-component__container__menu" ng-if="$ctrl.IsLogged()">
+            <nav>
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" ng-click="$ctrl.MenuTriggered()">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" uib-collapse="$ctrl.collapsed">
+                        <ul class="nav navbar-nav">
+                            <li ng-click="$ctrl.MenuTriggered()"
+                                ng-if="item.visible"
+                                ui-sref="{{ item.state }}"
+                                ui-sref-active="active"
+                                ng-repeat="item in $ctrl.menu"><a>{{ item.name }}</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </nav>
+        </div>
+        <div class="header-component__container__feedback" ng-if="$ctrl.IsLogged()">
+            <img src="https://app.teamsupport.com/dc/921387/chat/image" alt="Feedback" ng-click="$ctrl.OpenFeedbackChat()">
+        </div>
+        <div class="header-component__container__small-user-menu float-right" ng-if="$ctrl.IsLogged()">
+            <uib-dropdown class="uib-dropdown">
+                <uib-dropdown-toggle>
+                    <img src="/assets/images/profile_settings_icon.png">
+                </uib-dropdown-toggle>
+                <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu aria-labelledby="simple-dropdown">
+                    <li ng-if="$ctrl.userInfo.remainingContentToDownload" class="header-component__toolbar__user-section__user-info">
+                        <p>You have:</p>
+                        <p>{{ $ctrl.userInfo.remainingRecordsToDownload }} Data Records Remaining</p>
+                        <p>{{ $ctrl.userInfo.remainingContentToDownload }} Content Records</p>
+                        <p> in {{ $ctrl.userInfo.numberofMarkets }} Markets</p>
+                    </li>
+                    <li>
+                        <a ng-if="$ctrl.showIntegrationsLink()" ui-sref="app.integrations()">Integrations</a>
+                        <a href ng-click="$ctrl.ReloadCache()" ng-if="$ctrl.IsInternalBackofficeUser()">Reload Cache</a>
+                        <a href ng-click="$ctrl.ClearCache()" ng-if="$ctrl.IsInternalBackofficeUser()">Clear Cache</a>
+                        <a href ng-click="$ctrl.Logout()">Logout</a>
+                    </li>
+                    <li class="version">{{ $ctrl.GetVersion() }}</li>
+                </ul>
+            </uib-dropdown>
+
+            <a ng-click="$ctrl.OpenFeedbackChat()" class="header-component__container__small-user-menu__feedback">
+                <img src="/assets/images/heart.png" />
+            </a>
+
+        </div>
+    </div>
+
+</header>
+
+<div class="header-component__counts hidden-lt-1024" ng-if="$ctrl.ShowCounts()">
+    <div class="container-fluid lead-essentials-container">
+        <div>
+            <div class="container-fluid">
+                <div class="header-component__counts__wrapper">
+                    <div class="row">
+                        <div class="col-md-4 hidden-sm">
+                            <div class="row header-component__counts__row">
+                                <div class="col-xs-6">
+                                    <div class="results_num">Results Found: {{ $ctrl.GetTotalResults() }}</div>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <button class="btn btn-orange btn-sm"
+                                            style="letter-spacing: .01em; font-weight: bold; padding: 7px 18px; font-size: 10px; margin: 6px 0;"
+                                            ng-class="{ 'btn-disabled' : !$ctrl.IsButtonEnabled() }"
+                                            ng-click="$ctrl.Update(!$ctrl.IsButtonEnabled())"
+                                            uib-tooltip="Apply another filter to activate the button"
+                                            tooltip-placement="bottom"
+                                            tooltip-enable="$ctrl.IsTooltipForButtonVisible()"
+                                            style="margin-top: 5px;">
+                                        {{ $ctrl.GetButtonText() }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <counts-component additional-class="counts-sticky"></counts-component>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

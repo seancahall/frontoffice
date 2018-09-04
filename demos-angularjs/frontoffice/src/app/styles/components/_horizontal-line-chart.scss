@@ -1,0 +1,19 @@
+.horizontal-line-chart {
+  margin-bottom: 10px;
+  display: block;
+  .col-xs-6:first-child {
+    text-align: right;
+  }
+  &__label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: $medium-gray;
+    text-decoration: underline;
+    font-weight: normal;
+  }
+  &__value-bar {
+    margin-top: 3px;
+    background: $light-turquoise;
+    height: 12px;
+  }
+}

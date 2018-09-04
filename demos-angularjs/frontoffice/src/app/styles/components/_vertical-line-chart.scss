@@ -1,0 +1,61 @@
+vertical-line-chart-component {
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+
+  .vertical-line-chart {
+    display: inline-block;
+    position: relative;
+    margin: 10px 0;
+    &__bar-holder {
+      position: relative;
+      height: 120px;
+    }
+    &__label-holder {
+      position: relative;
+      height: 150px;
+    }
+    &__label {
+      font-size: 13px;
+      color: $medium-gray;
+      font-weight: normal;
+      transform: rotate(-90deg);
+      width: 150px;
+      transform-origin: 85px 75px;
+      text-align: right;
+      text-decoration: underline;
+      vertical-align: middle;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      position: relative;
+      left: -10px;
+
+      span {
+        position: relative;
+        display: block;
+      }
+    }
+    &__value-bar {
+      width: 2px;
+      background: $light-turquoise;
+      left: 50%;
+      margin-left: -1px;
+      position: absolute;
+      bottom: 0;
+    }
+    &__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background: $light-turquoise;
+      position: absolute;
+      left: 50%;
+      margin-left: -5px;
+    }
+  }
+  .tooltip-inner {
+    text-align: left !important;
+  }
+}

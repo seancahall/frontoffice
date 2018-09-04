@@ -1,0 +1,106 @@
+<div class="col-xs-4 content-details-thumb">
+    <!-- TRIGGER PDF VIEWER HERE -->
+    <div ng-if="$ctrl.content.mediaType === 'PDF' || $ctrl.content.mediaType === 'PIC'" class="mask"></div>
+    <div ng-if="$ctrl.content.mediaType === 'PDF' || $ctrl.content.mediaType === 'PIC'"
+         class="hover-content"
+         ng-click="$ctrl.announceClick($ctrl.menuList[1], $ctrl.content, false)">
+        <div class="hover-content-button">
+            <ul>
+                <li>
+                    <img src="/images/eye-big-white.gif" alt="" />
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /TRIGGER PDF VIEWER HERE -->
+
+    <div class="content-thumbnails" ng-click="$ctrl.showVideoPopup($ctrl.content)" ng-class="{'video-thumbnail':$ctrl.isVideoType($ctrl.content)}">
+        <div ng-if="$ctrl.content.contentTypeId === 9 || $ctrl.content.contentTypeId === 10" class="video-content"></div>
+
+        <img ng-src="{{$ctrl.content.thumbnailUrl}}" style="background-color: white" alt="" ng-hide="$ctrl.content.contentTypeId === 17">
+        <div ng-if="$ctrl.content.contentTypeId === 17">
+            <div style="margin: 0 auto;">
+                <div ng-class="$ctrl.detailClass">
+                    <div class="text-bite-detail">{{$ctrl.content.contentText}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xs-7 col-xs-offset-1">
+    <div contentType="{{$ctrl.content.contentType}}" class="selected-item-top" ng-class="{'allow-select':$ctrl.content.contentTypeId !== 17}">
+        <div class="selected-item-header">
+            <h3 ng-if="$ctrl.content.numberOfPiecesBundled > 0">Content Bundle: {{$ctrl.content.numberOfPiecesBundled}} pieces</h3>
+            <h4>Content Type: {{$ctrl.content.contentType}}</h4>
+            <h4 prevent-copy prevent-copy-allow="true">Content ID: {{$ctrl.content.contentId}}</h4>
+            <div prevent-copy prevent-copy-allow="true">
+                {{$ctrl.content.title}}
+            </div>
+        </div>
+    </div>
+    <div class="selected-item-body-content" ng-class="{'allow-select':$ctrl.content.contentTypeId !== 17}" prevent-copy prevent-copy-allow="true">
+        {{$ctrl.content.contentDescription}}
+    </div>
+
+    <div class="selected-item-info" ng-class="{'allow-select':$ctrl.content.contentTypeId !== 17}" prevent-copy prevent-copy-allow="true">
+        <div prevent-copy prevent-copy-allow="true">
+            <div flex="30" class="recommend">Recommended use:</div>
+            <div flex="70">
+                <ul>
+                    <li ng-repeat="usage in $ctrl.content.recommendedUsages">
+                        {{usage}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="selected-item-button">
+        <input ng-value="$ctrl.copyContent" id="x-{{$ctrl.content.contentId}}" class="force-select">
+
+        <button ngclipboard
+                data-clipboard-target="#x-{{$ctrl.content.contentId}}"
+                ng-click="$ctrl.copyDone($ctrl.content)"
+                ng-show="$ctrl.content.contentTypeId === 17"
+                ng-class="{
+                        'btn': true,
+                        'btn-orange': !$ctrl.content.alreadyDownloaded,
+                        'btn-dark-green': $ctrl.content.alreadyDownloaded,
+                        'btn-lg': true
+                    }">{{ $ctrl.content.alreadyDownloaded ? 'Copy Again' : 'Copy' }}</button>
+
+        <!-- download button: not PDF -->
+        <button ng-class="{
+                        'btn': true,
+                        'btn-orange': !$ctrl.content.alreadyDownloaded,
+                        'btn-dark-green': $ctrl.content.alreadyDownloaded,
+                        'btn-lg': true
+                    }"
+                ng-style="{
+                        'min-width': $ctrl.content.alreadyDownloaded ? '160px' : '120px'
+                    }"
+                ng-if="$ctrl.content.contentTypeId !== 17 && !$ctrl.isiOSMobileDevice && $ctrl.content.mediaType != 'PDF'"
+                ng-click="$ctrl.announceClick(null, $ctrl.content, true); $ctrl.detailViewDownload($ctrl.content.contentType, $ctrl.content);">{{ $ctrl.content.alreadyDownloaded ? 'Download Again' : 'Download' }}</button>
+
+        <!-- dropdown with download options: locked/unlocked PDF -->
+        <div uib-dropdown class="btn-group" dropdown-append-to-body="true" ng-if="!$ctrl.isiOSMobileDevice && $ctrl.content.mediaType == 'PDF'">
+            <button ng-class="{
+                            'btn': true,
+                            'btn-orange': !$ctrl.content.alreadyDownloaded,
+                            'btn-dark-green': $ctrl.content.alreadyDownloaded,
+                            'btn-lg': true
+                        }"
+                    uib-dropdown-toggle
+                    ng-style="{
+                            'min-width': $ctrl.content.alreadyDownloaded ? '160px' : '120px'
+                        }">{{ $ctrl.content.alreadyDownloaded ? 'Download Again' : 'Download' }}</button>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+                <li ng-repeat="item in $ctrl.menuList">
+                    <a ng-click="$ctrl.announceClick(item, $ctrl.content, true); $ctrl.detailViewDownload(item, $ctrl.content);">
+                        {{item.name}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

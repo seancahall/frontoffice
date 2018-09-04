@@ -1,0 +1,29 @@
+<div id="{{ ::$ctrl.chartId }}" class="vertical-line-chart" ng-style="{ width: $ctrl.setLabelPositionAndGetElementWidth() + 'px' }">
+    <div class="vertical-line-chart__bar-holder">
+        <div id="{{ ::$ctrl.chartId }}_position" class="vertical-line-chart__value-bar"
+             ng-style="{ height: $ctrl.percentageHeight + '%' }"></div>
+        <div class="vertical-line-chart__dot" ng-style="{ bottom: $ctrl.percentageHeight + 0.1 + '%' }"></div>
+    </div>
+    <div class="vertical-line-chart__label-holder">
+        <div class="vertical-line-chart__label">
+            <span class="clickable" ng-click="$ctrl.filterOnClick($event)">{{ ::$ctrl.label }}</span>
+        </div>
+    </div>
+</div>
+
+<app-tooltip trigger-element-id="{{ ::$ctrl.chartId }}"
+             append-to-element-id="{{ ::$ctrl.chartId }}_position"
+             placement="'top'"
+             position-shift-left="'-5'"
+             position-shift-top="'-25'"
+             keep-visible-on-tooltip-mouse-enter="true"
+             hide-delay="1000">
+    <div>
+        Industry: <b>{{ ::$ctrl.tooltipScope.industryName }}</b><br />
+        Total {{ ::$ctrl.tooltipScope.entityName }}s: <b>{{ ::$ctrl.tooltipScope.count | number }}</b><br />
+        Total Distribution: <b>{{ ::$ctrl.tooltipScope.distribution }}%</b><br />
+        <span class="clickable" ng-click="$ctrl.filterOnClick($event)">
+            SELECT
+        </span>
+    </div>
+</app-tooltip>

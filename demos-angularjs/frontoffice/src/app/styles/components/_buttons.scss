@@ -1,0 +1,157 @@
+.btn-group .btn,
+.btn {
+  font-weight: 400;
+  letter-spacing: .84;
+  cursor: pointer;
+  min-height: 36px;
+  border-radius: 40px !important; // Override as most important
+  padding: 9px 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+  &.btn-default {
+    transition: all 0.25s;
+    min-width: 130px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    outline: 0;
+    background: $light-turquoise;
+    color: #fff;
+    &:active,
+    &:focus {
+      background: $light-turquoise;
+      color: #fff;
+    }
+    &:hover {
+      background: $dark-turquoise;
+      color: $primary-white;
+    }
+  }
+  &.btn-dark-green {
+    transition: all 0.25s;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    outline: 0;
+    background: $dark-green;
+    color: #fff;
+    &:active,
+    &:focus {
+      background: $dark-green;
+      color: #fff;
+    }
+  }
+  &.btn-orange {
+    transition: all 0.25s;
+    width: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    border: none;
+    outline: 0;
+    background: $main-orange;
+    color: #fff;
+    &:active,
+    &:focus {
+      background: $main-orange;
+      color: #fff;
+    }
+    &:hover {
+      background: $main-orange-hover;
+      color: $primary-white;
+    }
+  }
+  &.btn-cancel {
+    color: $darker-gray;
+  }
+  &.btn-danger {
+    &:not(:first-child) {
+      margin-left: 5px;
+    }
+  }
+  &.dropdown-toggle:after {
+    content: ' ';
+    display: block;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    margin-top: -2px;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid\9;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+  }
+  &.btn-xs {
+    min-height: 0;
+    font-weight: 400;
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+  &.btn-sm {
+    min-height: 0;
+    font-weight: 400;
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+  &.btn-lg {
+    min-width: 130px;
+  }
+  &.btn-full {
+    width: 100%;
+  }
+  &.btn-info {
+    width: 46px;
+    min-width: 46px;
+    max-width: 46px;
+  }
+  &.btn-disabled {
+    background: #999999;
+    cursor: not-allowed;
+    opacity: 0.65;
+    &:hover,
+    &:focus {
+      background: #999999;
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+  }
+  &.rounded-none {
+    border-radius: 0 !important;
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+}
+
+.full-width-dropdown {
+  width: 100%;
+  ul {
+    width: 100%;
+    li {
+      a {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.form-control-inline {
+  padding: 17px 12px;
+}
+
+@media (min-width: $screen-md-min) {
+  .full-width-dropdown {
+    width: auto;
+    ul {
+      li {
+        a {
+          text-align: left;
+        }
+      }
+    }
+  }
+}

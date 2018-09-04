@@ -1,0 +1,58 @@
+@import "../_variables";
+.login-form {
+  .checkbox {
+    margin: 0;
+    font-size: 14px;
+    color: $darker-gray;
+    border-color: $darker-gray;
+  }
+  a {
+    font-size: 14px;
+    color: $darker-gray;
+    font-weight: normal;
+    vertical-align: baseline;
+    line-height: 12px;
+    cursor: pointer;
+  }
+  .input-group-addon {
+    background: #ffffff;
+    padding: 0;
+  }
+  .login_button, .reset_button {
+    margin-top: 20px;
+  }
+}
+
+.login-form {
+  background-color: #ffffff;
+  box-sizing: border-box;
+  height: auto;
+}
+
+.login-form-header, .reset-form-header {
+  text-align: center;
+  border-bottom: 2px solid #f3f3f3;
+  padding: 22px 0 6px 0;
+}
+
+.login-form-header span, .reset-form-header span {
+  border-bottom: 2px solid #00bcb4;
+  color: #00bcb4;
+  line-height: 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.93;
+  padding: 0 20px 7px;
+}
+
+.reset-form-header .no-border-bottom {
+  border-bottom: 0 !important;
+}
+
+.login-form-body {
+  padding: 10px 80px;
+}
+.reset-form-body {
+  padding: 10px 80px 25px 80px;
+}

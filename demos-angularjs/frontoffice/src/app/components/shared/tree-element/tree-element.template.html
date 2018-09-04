@@ -1,0 +1,25 @@
+<div class="industriesBrowser__dialog__root-row">
+    <div ng-click="$ctrl.ToggleCategory($ctrl.category)" class="industriesBrowser__dialog__toggler" ng-if="$ctrl.category.expandable">
+        <span ng-if="$ctrl.category.expanded">-</span>
+        <span ng-if="!$ctrl.category.expanded">+</span>
+    </div>
+
+    <label class="checkbox industriesBrowser__dialog__root-label"
+           ng-class="{ 'partially-selected': $ctrl.category.partiallySelected }"
+           ng-model="$ctrl.category.model"
+           ng-click="$ctrl.ToggleCheckbox($ctrl.category)"
+           ng-checked="$ctrl.category.selected"
+           uib-btn-checkbox>
+        {{ $ctrl.category.value }}
+    </label>
+
+</div>
+
+<ul ng-if="$ctrl.category.expanded">
+    <tree-element-component
+        category="childCategory"
+        expand="$ctrl.expand()"
+        toggle="$ctrl.toggle()"
+        ng-repeat="childCategory in $ctrl.category.childEntities">
+    </tree-element-component>
+</ul>

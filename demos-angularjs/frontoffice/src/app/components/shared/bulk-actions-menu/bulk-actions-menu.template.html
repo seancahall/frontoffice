@@ -1,0 +1,24 @@
+<div uib-dropdown class="full-width-dropdown">
+    <button uib-dropdown-toggle style="width: 100%;" class="btn btn-orange">SAVE</button>
+
+    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+        <li>
+            <a ng-click="$ctrl.showExportCSVDialog()">{{ $ctrl.GetName('export') }}</a>
+        </li>
+        <li ng-if="!$ctrl.query.isCustomMarketRequestPending && !$ctrl.query.isCustomChannel">
+            <a ng-click="$ctrl.showSaveQueryDialog()">{{ !$ctrl.query ? 'Save Query' : 'Save As New Query' }}</a>
+        </li>
+        <li ng-if="$ctrl.query && !$ctrl.query.isCustomChannel && !$ctrl.query.isCustomMarketRequestPending && !$ctrl.query.isUploadedQuery">
+            <a ng-click="$ctrl.showUpdateQueryDialog()">Update Query</a>
+        </li>
+        <li ng-if="$ctrl.query.isCustomChannel || $ctrl.query.isCustomMarketRequestPending">
+            <a ng-click="$ctrl.showUpdateQueryDialog()">{{ $ctrl.GetName('save') }}</a>
+        </li>
+        <li>
+            <a ng-click="$ctrl.showGenerateCountDialog()">{{ $ctrl.GetName('generate') }}</a>
+        </li>
+        <li ng-if="$ctrl.exportToSalesForceOptionEnabled()">
+            <a ng-click="$ctrl.showBulkExportToSalesForceDialog()">{{ $ctrl.GetName('exportToCrm') }}</a>
+        </li>
+    </ul>
+</div>

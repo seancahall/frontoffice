@@ -1,0 +1,37 @@
+<div id="{{ ::$ctrl.chartId }}" class="horizontal-line-chart row">
+    <div class="col-xs-6">
+        <label class="horizontal-line-chart__label"
+               ng-class="{
+                   'clickable': $ctrl.onClickEnabled,
+                   'not-clickable': !$ctrl.onClickEnabled
+               }"
+               ng-click="$ctrl.addRangeToFiltersOnClick($event)">{{ $ctrl.label }}</label>
+    </div>
+    <div class="col-xs-6">
+        <div id="{{ ::$ctrl.chartId }}_appendto" class="horizontal-line-chart__value-bar" ng-style="{ width: $ctrl.percentageWidth + '%' }"></div>
+    </div>
+</div>
+
+<app-tooltip trigger-element-id="{{ ::$ctrl.chartId }}"
+             append-to-element-id="{{ ::$ctrl.chartId }}_appendto"
+             placement="'right'"
+             position-shift-left="'10'"
+             position-shift-top="'0'"
+             keep-visible-on-tooltip-mouse-enter="true"
+             hide-delay="1000">
+    {{ ::$ctrl.tooltipScope.title }}<br />
+    Range: <b>{{ ::$ctrl.tooltipScope.rangeLabel }}</b><br />
+    Total {{ ::$ctrl.tooltipScope.entityName }}s: <b>{{ ::$ctrl.tooltipScope.count | number }}</b><br />
+    Total Distribution: <b>{{ ::$ctrl.tooltipScope.distribution }}%</b><br />
+    <span class="clickable"
+          ng-if="$ctrl.filterConfig"
+          ng-click="$ctrl.addRangeToFiltersOnClick($event)">
+        SELECT
+    </span>
+    <br />
+    <span class="clickable"
+          ng-if="$ctrl.filterConfig"
+          ng-click="$ctrl.excludeRangeToFiltersOnClick($event)">
+        EXCLUDE
+    </span>
+</app-tooltip>

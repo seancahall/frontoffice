@@ -1,0 +1,25 @@
+ul.dropdown-menu {
+  li {
+    a {
+      text-transform: uppercase;
+      font-weight: 400;
+      text-align: left;
+      display: inline-block;
+      border-radius: 0;
+      margin: auto 0;
+      font-size: 15px;
+      height: 100%;
+      padding: 13px 16px;
+      width: 100%;
+      cursor: pointer;
+      &[disabled="disabled"] {
+        background: #99999a;
+        color: rgba(0,0,0,0.25);
+        cursor: default;
+      }
+      &:hover {
+        background-color: rgba(158,158,158,.2);
+      }
+    }
+  }
+}

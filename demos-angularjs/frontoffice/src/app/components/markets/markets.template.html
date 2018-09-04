@@ -1,0 +1,201 @@
+<div class="container-fluid lead-essentials-container">
+
+    <div class="markets-page">
+        <filters-component ng-if="$ctrl.showHorizontalSearch"></filters-component>
+
+        <div ng-click="$ctrl.searchHorizontalChangeState()" class="search-line">
+            <img src="/assets/images/home-page-images/search_icon.png">
+        </div>
+
+        <tags-component></tags-component>
+
+        <div class="container-fluid">
+            <div class="hidden-xs hidden-sm hidden-md col-lg-4">
+                <filters-component ng-if="!$ctrl.showHorizontalSearch"></filters-component>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                <counts-component additional-class="big-counters"></counts-component>
+
+                <div id="loading-bar-spinner_t" ng-show="$ctrl.loading">
+                    <div class="spinerIcon">
+                        <div class="spinner-icon"></div>
+                    </div>
+                </div>
+                <div class="tabs-nav container-fluid container-fluid-no-padding">
+                    <div class="col-xs-6 no-padding-right">
+                        <div ng-click="$ctrl.Showtab('enterprise')" ng-class="{ 'active' : $ctrl.IsTabVisible('enterprise') }" class="tab-nav"><span>Accounts</span></div>
+                    </div>
+                    <div class="col-xs-6 no-padding-left">
+                        <div ng-click="$ctrl.Showtab('site')" ng-class="{ 'active' : $ctrl.IsTabVisible('site') }" class="tab-nav"><span>Sites</span></div>
+                    </div>
+                </div>
+                <div class="container-fluid container-fluid-no-padding">
+                    <div class="row section-margin">
+                        <div class="col-xs-12">
+                            <div class="tab-content" ng-if="$ctrl.IsTabVisible('enterprise')">
+                                <div class="col-xs-12">
+                                    <div class="card">
+                                        <div class="card-title">
+                                            <h2>Account Industry</h2>
+                                        </div>
+                                    </div>
+                                    <div class="card card-industries-section" id="industries-section-enterprise-card-container">
+                                        <vertical-line-chart-component
+                                            ng-repeat="column in $ctrl.accountIndustries"
+                                            max-value="$ctrl.accountIndustriesMaxValue"
+                                            label="column.entity"
+                                            value="column.distribution"
+                                            tooltip-scope="column.tooltipScope"
+                                            filter-config="column.filterConfig"
+                                            chart-id="column.chartId"
+                                            elements-count="$ctrl.accountIndustries.length"
+                                            container-id="'industries-section-enterprise-card-container'">
+                                        </vertical-line-chart-component>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-content" ng-if="$ctrl.IsTabVisible('site')">
+                                <div class="col-xs-12">
+                                    <div class="card">
+                                        <div class="card-title">
+                                            <h2>Site Industry</h2>
+                                        </div>
+                                    </div>
+                                    <div class="card card-industries-section" id="industries-section-site-card-container">
+                                        <vertical-line-chart-component
+                                            ng-repeat="column in $ctrl.siteIndustries"
+                                            max-value="$ctrl.siteIndustriesMaxValue"
+                                            label="column.entity"
+                                            value="column.distribution"
+                                            tooltip-scope="column.tooltipScope"
+                                            filter-config="column.filterConfig"
+                                            chart-id="column.chartId"
+                                            elements-count="$ctrl.siteIndustries.length"
+                                            container-id="'industries-section-site-card-container'">
+                                        </vertical-line-chart-component>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" ng-if="$ctrl.IsTabVisible('enterprise')">
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="card">
+                            <div class="card-title">
+                                <h2>Account employee distribution</h2>
+                            </div>
+                            <horizontal-line-chart-component
+                                ng-repeat="row in $ctrl.accountEmployees"
+                                max-value="$ctrl.accountEmployeesMaxValue"
+                                label="row.entity"
+                                value="row.distribution"
+                                filter-config="row.filterConfig"
+                                tooltip-scope="row.tooltipScope"
+                                chart-id="row.chartId">
+                            </horizontal-line-chart-component>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="card">
+                            <div class="card-title">
+                                <h2>Account revenue distribution</h2>
+                            </div>
+                            <horizontal-line-chart-component
+                                ng-repeat="row in $ctrl.accountRevenue"
+                                label="row.entity"
+                                max-value="$ctrl.accountRevenueMaxValue"
+                                value="row.distribution"
+                                filter-config="row.filterConfig"
+                                tooltip-scope="row.tooltipScope"
+                                chart-id="row.chartId">
+                            </horizontal-line-chart-component>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="card">
+                            <div class="card-title">
+                                <h2>Account budget distribution</h2>
+                            </div>
+                            <horizontal-line-chart-component
+                                ng-repeat="row in $ctrl.accountItBudget"
+                                label="row.entity"
+                                max-value="$ctrl.accountItBudgetMaxValue"
+                                value="row.distribution"
+                                filter-config="row.filterConfig"
+                                tooltip-scope="row.tooltipScope"
+                                chart-id="row.chartId">
+                            </horizontal-line-chart-component>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-content" ng-if="$ctrl.IsTabVisible('site')">
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="card">
+                            <div class="card-title">
+                                <h2>Site employee distribution</h2>
+                            </div>
+                            <horizontal-line-chart-component
+                                ng-repeat="row in $ctrl.siteEmployees"
+                                label="row.entity"
+                                max-value="$ctrl.siteEmployeesMaxValue"
+                                value="row.distribution"
+                                filter-config="row.filterConfig"
+                                tooltip-scope="row.tooltipScope"
+                                chart-id="row.chartId">
+                            </horizontal-line-chart-component>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="card">
+                            <div class="card-title">
+                                <h2>Site revenue distribution</h2>
+                            </div>
+                            <horizontal-line-chart-component
+                                ng-repeat="row in $ctrl.siteRevenuse"
+                                label="row.entity"
+                                max-value="$ctrl.siteRevenueMaxValue"
+                                value="row.distribution"
+                                filter-config="row.filterConfig"
+                                tooltip-scope="row.tooltipScope"
+                                chart-id="row.chartId">
+                            </horizontal-line-chart-component>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="card">
+                            <div class="card-title">
+                                <h2>Site budget distribution</h2>
+                            </div>
+                            <horizontal-line-chart-component
+                                ng-repeat="row in $ctrl.siteItbudget"
+                                label="row.entity"
+                                max-value="$ctrl.siteItBudgetMaxValue"
+                                value="row.distribution"
+                                filter-config="row.filterConfig"
+                                tooltip-scope="row.tooltipScope"
+                                chart-id="row.chartId">
+                            </horizontal-line-chart-component>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12">
+                    <div class="markets-spacer-with-button">
+                        <div class="card clearfix">
+                            <p>Find Prospects Like Your Customers. We want to give you a list of prospects who are most likely to buy. <a class="btn btn-orange btn-sm pull-right">Discover TargetSmart</a></p>
+                        </div>
+                    </div>
+                </div>
+                <location-heat-map-component></location-heat-map-component>
+            </div>
+        </div>
+    </div>
+</div>

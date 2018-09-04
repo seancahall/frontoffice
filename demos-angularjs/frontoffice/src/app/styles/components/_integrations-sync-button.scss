@@ -1,0 +1,52 @@
+.integrations-sync-button {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+
+  &__data-point {
+    &__not-in-crm {
+      color: $error-color !important;
+      div, span, a {
+        color: $error-color !important;
+      }
+    }
+    &__update-only-in-crm {
+      color: $main-yellow !important;
+      div, span, a {
+        color: $main-yellow !important;
+      }
+    }
+    &__matches-crm {
+      color: $slate-gray !important;
+      div, span, a {
+        color: $slate-gray !important;
+      }
+    }
+  }
+
+  &__btn {
+    margin-left: 10px;
+    border-radius: 3px;
+
+    padding: 0 16px !important;
+    font-weight: 500;
+    font-size: 11px;
+    height: 16px;
+
+    color: $primary-white !important;
+    outline: none;
+
+    &__sync-enabled {
+      background: $light-turquoise !important;
+    }
+
+    &__sync-enabled:hover {
+      background: $light-turquoise !important;
+    }
+  }
+
+  &__btn, &__btn:hover, &__btn:focus, &__btn.focus {
+    color: $primary-white !important;
+    outline: none;
+  }
+}

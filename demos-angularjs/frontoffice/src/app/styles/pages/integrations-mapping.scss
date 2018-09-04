@@ -1,0 +1,96 @@
+@import "../_variables";
+
+.integrations-mapping {
+  width: 95%;
+  margin-top: 40px;
+  background: $primary-white;
+
+  &__page-title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+  }
+
+  &__mapping-header {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  &__select-objects-row {
+    clear: both;
+
+    margin-right: -5px;
+
+    padding-left: 0;
+
+    label {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: $screen-sm - 1) {
+      // xs, sm
+      box-sizing: content-box !important;
+
+      &__left-dropdown, &__right-dropdown {
+        position: relative;
+        left: -5px;
+        width: calc(100% + 10px) !important;
+      }
+    }
+
+    @media (min-width: $screen-sm) {
+      // md, lg+
+      width: calc(100% + 5px);
+
+      &__left-dropdown {
+        position: relative;
+        left: -5px;
+        float: left;
+      }
+      &__right-dropdown {
+        position: relative;
+        left: 5px;
+        float: right;
+      }
+    }
+  }
+
+  &__mapping-row {
+    text-transform: none !important;
+
+    margin-bottom: 10px;
+
+    &__text {
+      text-align: center;
+      padding-top: 7px;
+      height: 40px;
+      display: block;
+    }
+
+    &__salesforce-element {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &__separator-line {
+    width: 100%;
+    height: 1px;
+    clear: both;
+    border-top: 1px solid $darker-gray;
+    padding-bottom: 10px;
+
+    &__top {
+      @media (max-width: $screen-sm - 1) {
+        // xs, sm
+        margin-top: 180px;
+      }
+      @media (min-width: $screen-sm) {
+        // md, lg+
+        margin-top: 100px;
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<div class="bubbles-wrapper" ng-style="{ 'max-height' : $ctrl.GetTagsHeight() }" ng-if="!$ctrl.hidden">
+    <ul class="stateList clearfix">
+        <li class="searchTag_item"
+            ng-repeat="bubble in $ctrl.GetBubbles()"
+            ng-class="{ 'boolean-search': bubble.booleanSearch }">
+            <span ng-if="bubble.bubblePrefix">{{ bubble.bubblePrefix }} :</span>
+            <span>{{ bubble.name }} </span>
+            <span>{{ bubble.bubbleSuffix }} </span>
+            <span ng-click="$ctrl.ClearOne(bubble, $index)">
+                <div class="bubble-close"></div>
+            </span>
+        </li>
+        <li class="searchTag_item"
+            ng-repeat="bubble in $ctrl.GetResultSelectionBubbles()"
+            ng-class="{ 'boolean-search': bubble.booleanSearch }">
+            <span ng-if="bubble.bubblePrefix">{{ bubble.bubblePrefix }} :</span>
+            <span>{{ bubble.name }} </span>
+            <span>{{ bubble.bubbleSuffix }} </span>
+            <span ng-click="$ctrl.ClearOneResultSelection(bubble)">
+                <div class="bubble-close"></div>
+            </span>
+        </li>
+        <li class="removeAll hidden-xs hidden-sm"
+            ng-if="$ctrl.GetBubbles().length || $ctrl.GetResultSelectionBubbles().length"
+            ng-click="$ctrl.ClearAll()">clear all</li>
+    </ul>
+</div>
+
+<a class="btn btn-orange btn-full hidden-md hidden-lg" ng-if="$ctrl.ShowButtonToGetMoreRows()" ng-click="$ctrl.GetTwoMoreRowsOfTags()">
+    Show more tags
+</a>
+
+<a class="removeAll hidden-md hidden-lg"
+   ng-if="$ctrl.GetBubbles().length"
+   ng-click="$ctrl.ClearAll()">clear all</a>

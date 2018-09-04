@@ -1,0 +1,39 @@
+.input {
+  display: inline-block;
+  width: 100%;
+  input {
+    width: 100%;
+  }
+  &.search-input {
+    input {
+      height: 40px;
+      border: 1px solid #999;
+      padding-left: 15px;
+      font-size: 14px;
+      background-image: url(/assets/images/icon/Black_Search.png) !important;
+      background-position: 95% !important;
+      background-repeat: no-repeat !important;
+      background-size: 18px !important;
+    }
+  }
+
+  &.clickable-search {
+    input {
+      padding-right: 35px !important;
+      width: 400px;
+    }
+
+    img {
+      z-index: 10000;
+      position: relative;
+      left: -45px;
+      margin: 10px;
+      height: 20px;
+      width: 20px;
+    }
+
+    img:hover {
+      cursor: pointer;
+    }
+  }
+}

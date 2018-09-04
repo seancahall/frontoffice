@@ -1,0 +1,16 @@
+<div class="integrations-sync-button"
+     ng-style="$ctrl.containerCss"
+     ng-class="{
+        'integrations-sync-button__data-point__not-in-crm': $ctrl.crmSyncStatus === 1 && $ctrl.canCrmExportEnabled,
+        'integrations-sync-button__data-point__update-only-in-crm': $ctrl.crmSyncStatus === 2 && $ctrl.canCrmExportEnabled,
+        'integrations-sync-button__data-point__matches-crm': $ctrl.crmSyncStatus > 2 && $ctrl.canCrmExportEnabled
+     }">
+    <div ng-transclude></div>
+
+    <button ng-if="$ctrl.canSyncBeSet()"
+            class="btn btn-orange btn-xs integrations-sync-button__btn"
+            ng-class="{
+                'integrations-sync-button__btn__sync-enabled': $ctrl.doSync
+            }"
+            ng-click="$ctrl.toggleSync()">SYNC</button>
+</div>

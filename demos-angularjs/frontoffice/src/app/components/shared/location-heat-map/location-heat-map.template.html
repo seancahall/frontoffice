@@ -1,0 +1,19 @@
+<div class="col-xs-12">
+    <loading-spinner-component ng-if="$ctrl.isLoading"></loading-spinner-component>
+
+    <div class="card">
+        <div class="card-title">
+            <h2>{{ $ctrl.market === 'enterprise' ? 'Account' : 'Site' }} Location</h2>
+            <div class="countries pull-right">
+                <ul>
+                    <li ng-repeat="(key, continent) in $ctrl.continents"
+                        ng-click="$ctrl.SelectContinent(key)"
+                        ng-class="{ 'active' : $ctrl.selectedContinent === key }">
+                        {{ continent.name }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="location-heat-map"></div>
+    </div>
+</div>

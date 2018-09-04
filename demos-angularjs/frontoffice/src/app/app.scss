@@ -1,0 +1,108 @@
+// Load variables
+// In LeadEssentials we need to base ONLY on that variables instead of using colors and so on manually.
+@import 'styles/_variables';
+//
+// Import font awesome
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome';
+
+// Import fonts
+@import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900');
+//
+// Import global styles
+@import 'styles/_globals';
+//
+// Import typo
+@import './styles/_typo';
+
+// Load bootstrap 3.3.7
+@import "~bootstrap-sass/assets/stylesheets/_bootstrap-sprockets.scss";
+@import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+// Load angular material
+@import '../../node_modules/angular-material-source/src/core/style/variables';
+@import '../../node_modules/angular-material-source/src/core/style/mixins';
+@import '../../node_modules/angular-material-source/src/components/panel/panel';
+@import '../../node_modules/angular-material-source/src/components/chips/chips';
+
+// Load fallback
+// It need to stay here until whole app styles will be rewritten
+@import 'styles/fallback';
+
+// Import components in new way
+@import './components/shared/footer/footer.styles';
+@import './components/shared/header/header.styles';
+
+// Import components from LE
+@import 'styles/components/index';
+
+// Load app components styles
+// Import pages
+@import './styles/pages/index';
+
+html {
+  background-color: $light-gray;
+}
+
+body {
+  background-color: $light-gray;
+  font-family: 'Lato', sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: static !important;
+  margin-top: 61px;
+  height: auto;
+  margin-bottom: 50px;
+  * {
+    font-family: 'Lato', sans-serif;
+  }
+}
+
+.lead-essentials-container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.container-fluid {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.container-fluid.lead-essentials-container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+@media (min-width: $screen-width-1024) {
+  body {
+    margin-top: 153px;
+  }
+  .container-fluid {
+    padding-left: 20px;
+    padding-right: 20px;
+    &.small-container {
+      width: 970px !important;
+    }
+  }
+  .lead-essentials-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (min-width: $screen-lg-min) {
+  .lead-essentials-container {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@media (min-width: $screen-xl-min) {
+  .lead-essentials-container.container-fluid {
+    padding-left: 88px;
+    padding-right: 88px;
+  }
+}
+

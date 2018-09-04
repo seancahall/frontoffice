@@ -1,0 +1,41 @@
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xs-no-padding min-max-fields">
+    <div ng-if="$ctrl.label" class="item-subheader additional-subheader-margin">
+        {{ $ctrl.label }}
+    </div>
+
+    <div class="min-max-fields__inner-container">
+        <div class="col-xs-5 min-max-fields__range-max">
+            <div class="min-max-fields__mark-excluded">
+                <img ng-if="$ctrl.searchParamOperator === 'NOT'" src="/assets/images/circle_20.svg" alt="This range is excluded" title="This range is excluded" />
+            </div>
+
+            <input type="text"
+                   ng-change="$ctrl.updateParentModel('min')"
+                   ng-model="$ctrl.model.min"
+                   ng-model-options="{ debounce: 500 }"
+                   placeholder="{{ ::$ctrl.placeholders.min }}"
+                   ng-keypress="$ctrl.preventNotNumericInput($event)"
+                   add-input-commas
+                   class="input-box single-value-input" />
+        </div>
+
+        <div class="item-subheader min-max-fields__separator">
+            TO
+        </div>
+
+        <div class="col-xs-5 min-max-fields__range-min">
+            <input type="text"
+                   ng-change="$ctrl.updateParentModel('max')"
+                   ng-model="$ctrl.model.max"
+                   ng-model-options="{ debounce: 500 }"
+                   placeholder="{{ ::$ctrl.placeholders.max }}"
+                   ng-keypress="$ctrl.preventNotNumericInput($event)"
+                   class="input-box single-value-input"
+                   add-input-commas
+                   ng-class="$ctrl.isInputGreaterThan() ? 'input-error' : ''" />
+            <span ng-click="$ctrl.removeElement()">
+                <img ng-if="$ctrl.showRemoveButton" src="/assets/images/close.png" alt="Remove this range" title="Remove this range" />
+            </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+tree-component {
+  &.no-margin {
+    ul {
+      padding-left: 0;
+    }
+  }
+  ul {
+    ul {
+      padding-left: 57px !important;
+    }
+  }
+
+  label.checkbox.partially-selected {
+    &:before {
+      background: #00BCB4;
+      border: 1px solid #00BCB4;
+    }
+    &:after {
+      content: '\2022';
+      position: absolute;
+      left: 1.4px;
+      top: 2.22222px;
+      font-size: 30px;
+      color: #ffffff;
+    }
+  }
+}

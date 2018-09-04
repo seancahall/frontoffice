@@ -1,0 +1,347 @@
+<div class="container-fluid lead-essentials-container">
+    <filters-component ng-if="$ctrl.showHorizontalSearch"></filters-component>
+
+    <div ng-click="$ctrl.searchHorizontalChangeState()" class="search-line">
+        <img src="/assets/images/home-page-images/search_icon.png">
+    </div>
+
+    <div class="container-fluid bubbles">
+        <div class="col-md-9 col-lg-10 hidden-xs hidden-sm">
+            <bubbles-component></bubbles-component>
+
+            <!-- VERSION4-2621 -->
+            <help-message-component></help-message-component>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"></div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="hidden-xs hidden-sm hidden-md col-lg-4">
+            <filters-component ng-if="!$ctrl.showHorizontalSearch"></filters-component>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+            <div class="container-fluid">
+                <div class="col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-12 col-md-5 col-lg-5 search-row-fallback">
+                    <!-- leaving this for now just in case... -->
+                    <!-- <div class="container-fluid container-fluid-no-padding" ng-show="!$ctrl.bundleBreadcrumbs">
+                        <div class="col-xs-3 text-right">
+                            <label>Sort by</label>
+                        </div>
+                        <div class="col-xs-9">
+                            <ui-select ng-model="$ctrl.contentSort" class="ui-select-transparent" search-enabled="false" ng-change="$ctrl.SortingChanged($ctrl.contentSort)">
+                                <ui-select-match>{{ $select.selected.name }}</ui-select-match>
+                                <ui-select-choices repeat="item in $ctrl.sortOptions track by $index">
+                                    {{ item.name }}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="col-xs-10 col-sm-5 col-md-5 col-lg-4">
+                    <div class="input search-input">
+                        <input type="text"
+                               ng-model="$ctrl.contentPhraseModel"
+                               ng-keypress="$ctrl.singleValueUpdate($event)"
+                               placeholder="{{ $ctrl.filters.contentPage.search.placeholder }}"
+                               class="input-box single-value-input" />
+                    </div>
+                </div>
+                <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1 text-right">
+                    <i ng-if="!$ctrl.isGrid" class="fa fa-th fa-2x content-view-icon" aria-hidden="true" ng-click="$ctrl.toggleView($ctrl.pageSize)" title="Grid View" style="margin-right: -4%;"></i>
+                    <i ng-if="$ctrl.isGrid" class="fa fa-bars fa-2x content-view-icon" aria-hidden="true" ng-click="$ctrl.toggleView($ctrl.pageSize)" title="List View"></i>
+                </div>
+            </div>
+
+            <div class="container-fluid container-fluid-no-padding">
+                <!-- BUNDLE INFO -->
+                <div ng-show="$ctrl.showAboutBundle" class="selected-item-content">
+                    <loading-spinner-component ng-if="$ctrl.spinner_b" container-style="'position: relative !important;'"></loading-spinner-component>
+
+                    <flag-data entity-type="Content" entity-id="contentGet.contentId" style="position: absolute; right: 0;" class="small"></flag-data>
+
+                    <div class="bundle-breadcrumbs" ng-show="$ctrl.bundleBreadcrumbs">
+                        <a ng-click="$ctrl.backtocontent()" class="return-to-content"><img src="/assets/images/icon/arrow-drop-down.png" alt="back" class="back_arrow"> Return to search results</a>
+                    </div>
+
+                    <div>
+                        <div class="container-fluid container-fluid-no-padding">
+                            <content-bundle-details-component data="$ctrl.contentGet"></content-bundle-details-component>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- toggle to grid view -->
+                <div ng-if="$ctrl.isGrid">
+
+                    <div class="container-fluid">
+                        <!-- #end BUNDLE INFO -->
+                        <div ng-if="$ctrl.contentGet.bundledContents.length >=1" class="content-title container-fluid container-fluid-no-padding">
+                            <h2>Bundled Content</h2>
+                        </div>
+                        <div ng-if="$ctrl.contentGet.bundledContents.length >=1" class="container-fluid container-fluid-masonry container-fluid-no-padding">
+                            <div ng-repeat="content in $ctrl.contentGet.bundledContents">
+                                <content-bundle data="content" content-template="content-bundle"></content-bundle>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="$ctrl.bundleBreadcrumbs">
+                        <hr class="bundle-info-divider">
+                        <div class="col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-12 col-md-5 col-lg-5 search-row-fallback bundle-info-spacer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- toggle to list view -->
+                <div ng-if="!$ctrl.isGrid">
+                    <div ng-if="$ctrl.bundleBreadcrumbs">
+                        <hr class="bundle-info-divider">
+                        <div class="col-md-offset-2 col-lg-offset-2 col-xs-12 col-sm-12 col-md-5 col-lg-5 search-row-fallback bundle-info-spacer">
+                        </div>
+                    </div>
+
+                    <div class="container-fluid container-fluid-no-padding container-margin-top allow-select" prevent-copy prevent-copy-allow="true">
+                        <div class="col-xs-12">
+                            <div id="loading-bar-spinner_t" ng-show="$ctrl.loading">
+                                <div class="spinerIcon">
+                                    <div class="spinner-icon"></div>
+                                </div>
+                            </div>
+                            <table class="grid-table">
+                                <thead>
+                                <tr>
+                                    <th ng-click="$ctrl.SortBy('Title')">
+                                        <div>
+                                            <div><span>Title</span></div>
+                                            <div><i class="sort sort-{{ $ctrl.GetSortDirection('Title') }}"></i></div>
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                    <th ng-click="$ctrl.SortBy('ContentId')">
+                                        <div>
+                                            <div><span>Content Id</span></div>
+                                            <div><i class="sort sort-{{ $ctrl.GetSortDirection('ContentId') }}"></i></div>
+                                        </div>
+                                    </th>
+                                    <th ng-click="$ctrl.SortBy('PublishDate')">
+                                        <div>
+                                            <div><span>Date</span></div>
+                                            <div><i class="sort sort-{{ $ctrl.GetSortDirection('PublishDate') }}"></i></div>
+                                        </div>
+                                    </th>
+                                    <th ng-click="$ctrl.SortBy('ContentType')">
+                                        <div>
+                                            <div><span>Type</span></div>
+                                            <div><i class="sort sort-{{ $ctrl.GetSortDirection('ContentType') }}"></i></div>
+                                        </div>
+                                    </th>
+                                    <th ng-click="$ctrl.SortBy('NumberOfPiecesBundled')">
+                                        <div>
+                                            <div><span>Bundle Count</span></div>
+                                            <div><i class="sort sort-{{ $ctrl.GetSortDirection('NumberOfPiecesBundled') }}"></i></div>
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr dir-paginate="content in $ctrl.listContent.summaries | filter:q | itemsPerPage: $ctrl.pageSize track by $index"
+                                    total-items="$ctrl.listContent.totalResultsCount"
+                                    current-page="pagination.current">
+
+                                    <td class="hidden-xs hidden-sm grid-table__image grid-table__custom-width" style="min-width: 350px;">
+                                        <div ng-if="content.contentTypeId !== 17">
+                                            <img onError="this.onerror=null;this.src='/assets/images/listview-default.png'" ng-src="{{ content.thumbnailUrl }}"  class="list-view-image">
+                                        </div>
+                                        <div ng-if="content.contentTypeId === 17">
+                                            <img ng-src="{{ $ctrl.getRbImage(content.contentText)}}" class="list-view-image">
+                                        </div>
+                                        <span class="grid-table__title">Title</span>
+                                        <!-- TODO - Warning - Popover component -->
+                                        <span class="grid-table__popover"
+                                              popover-trigger="focus"
+                                              popover-is-open="$ctrl.IsPopoverOpened($event, $index)"
+                                              ng-mouseenter="$ctrl.OpenPopover($event, $index, true)"
+                                              popover-class="popover-styles"
+                                              uib-popover-template="'popOverTemplate'"
+                                              popover-placement="right">
+                                            {{ content.contentTypeId === 17 ? content.contentText.substring(0,300) + ' ...' : content.title }}
+                                        </span>
+                                    </td>
+
+                                    <td class="grid-table__full-width grid-table__custom-width">
+                                        <div class="visible-xs visible-sm col-xs-12 col-sm-12 grid-table__image">
+                                            <img ng-src="{{ content.thumbnailUrl }}" />
+                                        </div>
+                                        <div class="visible-xs visible-sm col-xs-12 col-sm-12">&nbsp;</div>
+                                        <div class="visible-xs visible-sm col-xs-12 col-sm-12 float-left">
+                                            <span class="grid-table__title">Title</span>
+                                            <!-- TODO - Warning - Popover component -->
+                                            <span class="grid-table__popover"
+                                                  popover-trigger="focus"
+                                                  popover-is-open="$ctrl.IsPopoverOpened($event, $index)"
+                                                  ng-mouseenter="$ctrl.OpenPopover($event, $index, true)"
+                                                  popover-class="popover-styles"
+                                                  uib-popover-template="'popOverTemplate'"
+                                                  popover-placement="right">
+                                                {{ content.contentTypeId === 17 ? content.contentText.substring(0,300) + '...' : content.title }}
+                                            </span>
+                                        </div>
+
+                                        <!-- cells: sm + xs -->
+                                        <div class="visible-xs visible-sm col-xs-12 col-sm-12">&nbsp;</div>
+                                        <div class="visible-xs-inline visible-sm-inline row col-xs-12 col-sm-12">
+                                            <div class="col-xs-6 col-sm-6">
+                                                <span class="grid-table__title">Content Id</span>
+                                                {{ content.contentId }}
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6">
+                                                <span class="grid-table__title">Date</span>
+                                                {{ content.publishedDate | date:"MM/dd/yyyy" }}
+                                            </div>
+
+                                            <!-- rows separator - go to next row - only xs -->
+                                            <div class="visible-xs col-xs-12">&nbsp;</div>
+
+                                            <div class="col-xs-6 col-sm-6">
+                                                <span class="grid-table__title">Type</span>
+                                                {{ content.contentType }}
+                                            </div>
+                                            <div class="col-xs-4 col-sm-4">
+                                                <span class="grid-table__title">Bundle Count</span>
+                                                {{ content.numberOfPiecesBundled }}
+                                            </div>
+                                            <div class="col-xs-2 col-sm-2">
+                                                {{content.mediaType}}
+                                                <a ng-click="$ctrl.openBundleInfo(content)"><img src="/assets/images/info_icon_grey.png" alt="" title="More Info" class="list-view-icon"></a>
+                                            </div>
+                                        </div>
+                                        <!-- /cells: sm + xs -->
+                                    </td>
+                                    <td class="hidden-xs hidden-sm">
+                                        <!-- md, lg -->
+                                        {{ content.contentId }}
+                                    </td>
+                                    <td class="hidden-xs hidden-sm">
+                                        <!-- md, lg -->
+                                        {{ content.publishedDate | date:"MM/dd/yyyy" }}
+                                    </td>
+                                    <td class="hidden-xs hidden-sm">
+                                        <!-- md, lg -->
+                                        {{ content.contentType }}
+                                    </td>
+                                    <td class="hidden-xs hidden-sm">
+                                        <!-- md, lg -->
+                                        {{ content.numberOfPiecesBundled }}
+                                    </td>
+                                    <td class="container-fluid grid-table__actions">
+                                        <!-- download menu (hidden for iOS) -->
+                                        <div ng-show="content.contentTypeId !== 17">
+                                            <img src="/assets/images/download_icon_grey.png" class="list-view-icon" ng-if="!$ctrl.isiOSMobileDevice && content.mediaType !== 'PDF'"
+                                                ng-click="$ctrl.announceClick(null, content, true); $ctrl.listViewDownload(content.contentType, content.title);" title="Download" />
+                                            <div uib-dropdown dropdown-append-to-body="true" class="full-width-dropdown" ng-if="!$ctrl.isiOSMobileDevice && content.mediaType === 'PDF'">
+                                                <div uib-dropdown-toggle>
+                                                    <img src="/assets/images/download_icon_grey.png" class="list-view-icon" title="Download Options"/>
+                                                </div>
+                                                <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                                                    <li ng-repeat="item in $ctrl.menuList">
+                                                        <a ng-click="$ctrl.announceClick(item, content, true); $ctrl.listViewDownload(item.type, content.title);">{{item.name}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- VERSION4-3543 -->
+                                        <div ng-show="content.contentTypeId === 17">
+                                            <input ng-value="content.contentText" id="x-data-{{content.contentId}}" class="force-select">
+                                            <a ngclipboard
+                                                data-clipboard-target="#x-data-{{content.contentId}}"
+                                                ng-click="$ctrl.copyDone(content)" ng-if="$ctrl.isCopyAllowed()"><img src="/assets/images/copy_icon_grey.png"  title="Copy Content" alt="" class="list-view-icon"></a>
+                                            <a ng-if="!$ctrl.isCopyAllowed()" ng-click="$ctrl.copyDone(content)"><img src="/assets/images/copy_icon_grey.png" alt="" class="list-view-icon"></a>
+                                         </div>
+                                    </td>
+                                    <td class="hidden-xs hidden-sm">
+                                        <img src="/assets/images/info_icon_grey.png" title="Details" class="list-view-icon" ng-click="$ctrl.openBundleInfo(content)">
+                                    </td>
+                                    <td class="hidden-xs hidden-sm">
+                                        <a ng-if="content.mediaType === 'PDF' || content.mediaType === 'PIC'" ng-click="$ctrl.close(); $ctrl.announceClick($ctrl.menuList[1], content, false)">
+                                            <img src="/assets/images/eye-big-grey.gif" title="Preview" class="preview-icon" alt="" />
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="downloadMore" ng-if="!$ctrl.listContent.resultsCount">
+                                <span>No results found</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid container-fluid-no-padding">
+                <div ng-if="$ctrl.isGrid">
+                    <div class="container-fluid">
+                        <loading-spinner-component ng-show="$ctrl.loading"></loading-spinner-component>
+                        <div class="conent_noRecord" ng-show="!$ctrl.loading && !$ctrl.researchBitesArray.resultsCount">
+                            <span>No results found</span>
+                        </div>
+                        <!-- standard grid -->
+                        <div ng-if="!$ctrl.showResearchBitesView" class="container-fluid container-fluid-masonry container-fluid-no-padding">
+                            <div dir-paginate="content in $ctrl.contents.summaries | itemsPerPage: $ctrl.pageSize"
+                                 total-items="$ctrl.contents.totalResultsCount"
+                                 current-page="pagination.current">
+                                <content-bundle data="content" content-template="content-bundle"></content-bundle>
+                            </div>
+                        </div>
+
+                        <!-- research bites layout -->
+                        <div class="container-fluid container-fluid-no-padding" ng-if="$ctrl.showResearchBitesView">
+                            <research-bites-component data="researchBitesSort"
+                                                      dir-paginate="researchBitesSort in $ctrl.researchBitesArray | filter:q | itemsPerPage: $ctrl.pageSize"
+                                            total-items="$ctrl.researchBitesArray.totalResultsCount"
+                                            current-page="pagination.current">
+                            </research-bites-component>
+                            <div class="downloadMore" ng-if="!$ctrl.researchBitesArray.length">
+                                <span>No results found</span>
+                            </div>
+                        </div>
+
+                        <div style="display: none">
+                            <div class="content-items">
+                                <div class="home-link" style="min-height: 300px">
+                                    <div class="home-content">
+                                        <div class="circle support-circle">
+                                            <img class="home-img" src="/assets/images/custom_program_icon.png">
+                                        </div>
+                                    </div>
+                                    <div class="home-head">
+                                        Request a custom program
+                                    </div>
+                                    <div class="head-text">
+                                        Looking for custom content? Need a speaker? Interested in learning more about our interactive tools?
+                                    </div>
+                                </div>
+                                <button class="btn btn-default" ng-click="$ctrl.openCustomContentDialog()">request a custom program</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="pagination pagination-grid">
+                <dir-pagination-controls
+                        boundary-links="true"
+                        class="paginationClass"
+                        on-page-change="$ctrl.PageChangedListView(newPageNumber, 'accounts')"
+                        max-size="10">
+                </dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+
+    <!-- Todo -->
+    <!--<ng-include src="'page/customContentDialog.html'"></ng-include>-->
+</div>
+</div>

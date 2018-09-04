@@ -1,0 +1,226 @@
+// Disabled box
+// Adding additional box with high z-index to mask everything in background
+.disable-box {
+  cursor: default;
+> * {
+    opacity: 0.3;
+  };
+
+}
+
+// Disable animations at all for elements with that class
+.disable-animations {
+  transition-property: none !important;
+  transform: none !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+// Row for search row
+.search-row {
+  padding: 20px 0;
+  &.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+> div {
+    text-align: right;
+    label {
+      line-height: 39px;
+      margin: 0;
+    }
+  }
+}
+
+// Override for container-fluid
+.container-fluid {
+  &.container-fluid-no-padding {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  &.container-fluid-masonry-home {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-flow: row wrap;
+    & > div {
+      width: 100%;
+    }
+  }
+  &.container-fluid-masonry {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-flow: row wrap;
+    & > div {
+      width: 100%;
+    }
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  .container-fluid {
+    &.container-fluid-masonry {
+      & > div {
+        width: 50%;
+      }
+    }
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .container-fluid {
+    &.container-fluid-masonry {
+      & > div {
+        width: 33.33%;
+      }
+    }
+  }
+}
+
+
+@media (min-width: $screen-lg-min) {
+  .container-fluid {
+    &.container-fluid-masonry-home {
+      & > div {
+        width: 14%;
+        margin: 15px;
+      }
+    }
+  }
+}
+
+@media (min-width: $screen-lg-min) {
+  .container-fluid {
+    &.container-fluid-masonry {
+      & > div {
+        width: 25%;
+        
+      }
+    }
+  }
+}
+
+// Sometimes we do not need the padding in col in one of the edge
+.container-fluid {
+  .no-padding-left {
+    padding-left: 0;
+  }
+  .no-padding-right {
+    padding-right: 0;
+  }
+  &.container-margin-top {
+    margin-top: 10px;
+  }
+  &.container-margin-bottom {
+    margin-bottom: 10px;
+  }
+}
+
+// Some of the columns which will be in another row maybe do not need be padded
+.col-xs-12 {
+  &.col-xs-no-padding {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  &.col-xs-additional-margin {
+    margin-top: 10px;
+  }
+}
+
+.col-sm-6 {
+  .additional-subheader-margin {
+    margin-left: 5px;
+  }
+}
+
+.content .navigation-simple .menupage-items .list-content .item-subheader.no-margin {
+  margin: 0 !important;
+}
+
+.clickable {
+  text-decoration: underline !important;
+  cursor: pointer !important;
+}
+
+.not-clickable {
+  text-decoration: none !important;
+  cursor: default !important;
+}
+
+.disabled-link {
+  @extend .not-clickable;
+
+  text-transform: uppercase;
+  font-weight: 400;
+  text-align: left;
+  display: inline-block;
+  border-radius: 0;
+  margin: auto 0;
+  font-size: 15px;
+  height: 100%;
+  padding: 13px 16px;
+  width: 100%;
+  opacity: 0.7;
+  outline: none;
+}
+
+.hidden-lt-1024 {
+  @media (max-width: $screen-width-1024 - 1) {
+    display: none !important;
+  }
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, .8);
+  z-index: 97;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    width: 14px;
+    height: 14px;
+
+    border: solid 2px transparent;
+    border-top-color: $turquoise;
+    border-left-color: $turquoise;
+    border-radius: 50%;
+
+    content: '';
+    -webkit-animation: loading-bar-spinner 400ms linear infinite;
+    -moz-animation: loading-bar-spinner 400ms linear infinite;
+    -ms-animation: loading-bar-spinner 400ms linear infinite;
+    -o-animation: loading-bar-spinner 400ms linear infinite;
+    animation: loading-bar-spinner 400ms linear infinite;
+  }
+}
+
+// uib-btn-checkbox with disabled attr
+label.checkbox[disabled] {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+label.checkbox[disabled]:before {
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+.section-margin {
+  margin-bottom: 10px;
+}
+
+.bg-success {
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+@import "../components/insight-details/insight-details.styles";
+@import "../components/error-404/error-404.styles";
+@import "../components/shared/tree-element/tree-element.styles";
